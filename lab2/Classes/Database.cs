@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+using System.Xml.Linq;
 
 namespace lab2.Classes
 {
@@ -15,7 +16,7 @@ namespace lab2.Classes
         public List<Center> Centers { get; set; } = new List<Center>();
         public Database() { }
 
-        public void Read()
+        public void ReadAll()
         {
             using (var connection = new SqliteConnection(ConnectionString))
             {
@@ -32,14 +33,14 @@ namespace lab2.Classes
                             reader.GetString(1),
                             reader.GetInt32(2),
                             reader.GetInt32(3),
-                            reader.GetString(4)
+                            (Type)reader.GetInt32(4)
                         ));
                     }
                 }
 
                 foreach(Player player in Players)
                 {
-                    if (player.Type == "PointGuard")
+                    if (player.Type == Type.PointGuard)
                     {
                         using (var command = new SqliteCommand("SELECT * FROM PointGuards WHERE ID = @ID", connection))
                         {
@@ -54,7 +55,7 @@ namespace lab2.Classes
                                         player.Name,
                                         player.Height,
                                         player.JerseyNumber,
-                                        "PointGuard",
+                                        Type.PointGuard,
                                         reader.GetDouble(1),
                                         reader.GetDouble(2)
                                     );
@@ -76,7 +77,7 @@ namespace lab2.Classes
                                         player.Name,
                                         player.Height,
                                         player.JerseyNumber,
-                                        "Center",
+                                        Type.Center,
                                         reader.GetInt32(1),
                                         reader.GetInt32(2),
                                         reader.GetDouble(3),
@@ -88,6 +89,82 @@ namespace lab2.Classes
                     }
                 }
             }
+        }
+
+        public Player ReadOne(int playerID)
+        {
+            Player? player = null;
+            using (var connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+                using (var command = new SqliteCommand("SELECT * FROM Players WHERE ID = @ID", connection))
+                {
+                    command.Parameters.AddWithValue("@ID", playerID);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            player = new Player
+                            (
+                                reader.GetInt32(0),
+                                reader.GetString(1),
+                                reader.GetInt32(2),
+                                reader.GetInt32(3),
+                                (Type)reader.GetInt32(4)
+                            );
+                        }
+                    }
+                }
+                if (player.Type == Type.PointGuard)
+                {
+                    using (var command = new SqliteCommand("SELECT * FROM PointGuards WHERE ID = @ID", connection))
+                    {
+                        command.Parameters.AddWithValue("@ID", player.ID);
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                player.PointGuard = new PointGuard
+                                (
+                                    player.ID,
+                                    player.Name,
+                                    player.Height,
+                                    player.JerseyNumber,
+                                    Type.PointGuard,
+                                    reader.GetDouble(1),
+                                    reader.GetDouble(2)
+                                );
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    using (var command = new SqliteCommand("SELECT * FROM Centers WHERE ID = @ID", connection))
+                    {
+                        command.Parameters.AddWithValue("@ID", player.ID);
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                player.Center = new Center
+                                (
+                                    player.ID,
+                                    player.Name,
+                                    player.Height,
+                                    player.JerseyNumber,
+                                    Type.Center,
+                                    reader.GetInt32(1),
+                                    reader.GetInt32(2),
+                                    reader.GetDouble(3),
+                                    reader.GetDouble(4)
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            return player;
         }
 
         public void Add(Player player)
@@ -142,6 +219,59 @@ namespace lab2.Classes
                 command.Parameters.AddWithValue("@ID", PlayerID);
                 command.ExecuteNonQuery();
                 Console.WriteLine("Player deleted from the database.");
+            }
+        }
+
+        public void Edit(int PlayerID, string newName, int newHeight, int newJerseyNumber)
+        {
+            using (var connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+                SqliteCommand command = new SqliteCommand();
+                command.Connection = connection;
+                command.CommandText = "UPDATE Players SET Name = @Name, Height = @Height, JerseyNumber = @JerseyNumber WHERE ID = @ID";
+                command.Parameters.AddWithValue("@ID", PlayerID);
+                command.Parameters.AddWithValue("@Name", newName);
+                command.Parameters.AddWithValue("@Height", newHeight);
+                command.Parameters.AddWithValue("@JerseyNumber", newJerseyNumber);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void Update(Player player)
+        {
+            using (var connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+                SqliteCommand command = new SqliteCommand();
+                command.Connection = connection;
+                command.CommandText = "UPDATE Players SET Name = @Name, Height = @Height, JerseyNumber = @JerseyNumber WHERE ID = @ID";
+                command.Parameters.AddWithValue("@ID", player.getID());
+                command.Parameters.AddWithValue("@Name", player.getName());
+                command.Parameters.AddWithValue("@Height", player.getHeight());
+                command.Parameters.AddWithValue("@JerseyNumber", player.getJerseyNumber());
+                command.ExecuteNonQuery();
+
+                if (player.getType() == Type.Center)
+                {
+                    command.Parameters.Clear();
+                    command.CommandText = "UPDATE Centers SET Blocks = @Blocks, Rebounds = @Rebounds, BlocksPerGame = @BlocksPerGame, ReboundsPerGame = @ReboundsPerGame WHERE ID = @ID";
+                    command.Parameters.AddWithValue("@ID", player.getID());
+                    command.Parameters.AddWithValue("@Blocks", player.Center.getBlocks());
+                    command.Parameters.AddWithValue("@Rebounds", player.Center.getRebounds());
+                    command.Parameters.AddWithValue("@BlocksPerGame", player.Center.getBlocksPerGame());
+                    command.Parameters.AddWithValue("@ReboundsPerGame", player.Center.getReboundsPerGame());
+                    command.ExecuteNonQuery();
+                } else if (player.getType() == Type.PointGuard)
+                {
+                    command.Parameters.Clear();
+                    command.CommandText = "UPDATE PointGuards SET AssistsPerGame = @AssistsPerGame, ThreePointPercentage = @ThreePointPercentage WHERE ID = @ID";
+                    command.Parameters.AddWithValue("@ID", player.getID());
+                    command.Parameters.AddWithValue("@AssistsPerGame", player.PointGuard.getAssistsPerGame());
+                    command.Parameters.AddWithValue("@ThreePointPercentage", player.PointGuard.getThreePointPercentage());
+                    command.ExecuteNonQuery();
+                }
+
             }
         }
     }

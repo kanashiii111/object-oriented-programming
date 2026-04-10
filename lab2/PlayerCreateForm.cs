@@ -11,9 +11,9 @@ using lab2.Classes;
 
 namespace lab2
 {
-    public partial class Form2 : Form
+    public partial class PlayerCreateForm : Form
     {
-        public Form2()
+        public PlayerCreateForm()
         {
             InitializeComponent();
         }
@@ -59,13 +59,13 @@ namespace lab2
             
             if (comboBox1.SelectedIndex == 0)
             {
-                newPlayer = new Player(0, name, height, jerseyNumber, "PointGuard");
-                PointGuard newPG = new PointGuard(0, name, height, jerseyNumber, "PointGuard", 0.0, 0.0);
+                newPlayer = new Player(0, name, height, jerseyNumber, Type.PointGuard);
+                PointGuard newPG = new PointGuard(0, name, height, jerseyNumber, Type.PointGuard, 0.0, 0.0);
                 newPlayer.PointGuard = newPG;
             } else
             {
-                newPlayer = new Player(0, name, height, jerseyNumber, "Center");
-                Center newC = new Center(0, name, height, jerseyNumber, "Center", 0, 0, 0.0, 0.0);
+                newPlayer = new Player(0, name, height, jerseyNumber, Type.Center);
+                Center newC = new Center(0, name, height, jerseyNumber, Type.Center, 0, 0, 0.0, 0.0);
                 newPlayer.Center = newC;
             }
 

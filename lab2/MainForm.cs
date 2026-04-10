@@ -3,9 +3,9 @@ using System.Numerics;
 
 namespace lab2
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             this.Load += Form1_Load;
@@ -26,7 +26,7 @@ namespace lab2
             }
 
             Database dbContext = new Database();
-            dbContext.Read();
+            dbContext.ReadAll();
 
             foreach (Player player in dbContext.Players)
             {
@@ -34,13 +34,13 @@ namespace lab2
                 string cInfo = string.Empty;
                 string playerInfo = string.Empty;
 
-                if (player.Type == "PointGuard")
+                if (player.Type == Type.PointGuard)
                 {
                     pgInfo = string.Format("apg: {0}, tpp: {1}", player.PointGuard.assistsPerGame, player.PointGuard.threePointPercentage);
 
                     playerInfo = pgInfo;
                 }
-                else if (player.Center != null)
+                else if (player.Type == Type.Center)
                 {
                     cInfo = string.Format("blocks: {0}, rebounds: {1}, bpg: {2}, rpg: {3}", player.Center.blocks, player.Center.rebounds, player.Center.blocksPerGame, player.Center.reboundsPerGame);
 
@@ -48,11 +48,11 @@ namespace lab2
                 }
 
                 dataGridView1.Rows.Add(
-                    player.ID,
-                    player.Name,
-                    player.Height,
-                    player.JerseyNumber,
-                    player.Type,
+                    player.getID(),
+                    player.getName(),
+                    player.getHeight(),
+                    player.getJerseyNumber(),
+                    player.getType(),
                     playerInfo
                 );
             }
@@ -65,7 +65,7 @@ namespace lab2
 
         private void AddPlayerButton_click(object sender, EventArgs e)
         {
-            Form2 createPlayerForm = new Form2();
+            PlayerCreateForm createPlayerForm = new PlayerCreateForm();
             createPlayerForm.ShowDialog();
             LoadDataGridView();
         }
@@ -91,6 +91,29 @@ namespace lab2
         {
             int row = dataGridView1.SelectedCells[0].RowIndex;
             int playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            Database dbContext = new Database();
+            Player playerToEdit = dbContext.ReadOne(playerID);
+            PlayerEditForm playerEditForm = new PlayerEditForm(playerToEdit, playerID);
+            playerEditForm.ShowDialog();
+            LoadDataGridView();
+        }
+
+        private void PlayerMethodsButton_Click(object sender, EventArgs e)
+        {
+            int row = dataGridView1.SelectedCells[0].RowIndex;
+            int playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            Database dbContext = new Database();
+            Player player = dbContext.ReadOne(playerID);
+            if (player.getType() == Type.Center)
+            {
+                PlayerCenterMethodsForm playerCenterMethodsForm = new PlayerCenterMethodsForm(player);
+                playerCenterMethodsForm.ShowDialog();
+            } else if (player.getType() == Type.PointGuard)
+            {
+                PlayerPointGuardMethodsForm playerPointGuardsMethodsForm = new PlayerPointGuardMethodsForm(player);
+                playerPointGuardsMethodsForm.ShowDialog();
+            }
+            LoadDataGridView();
         }
     }
 }

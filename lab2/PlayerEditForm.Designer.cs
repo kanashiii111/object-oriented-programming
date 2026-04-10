@@ -34,6 +34,7 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
+            EditPlayerButton = new Button();
             SuspendLayout();
             // 
             // textBox1
@@ -84,11 +85,22 @@
             label3.TabIndex = 5;
             label3.Text = "Jersey Number";
             // 
+            // EditPlayerButton
+            // 
+            EditPlayerButton.Location = new Point(87, 231);
+            EditPlayerButton.Name = "EditPlayerButton";
+            EditPlayerButton.Size = new Size(100, 28);
+            EditPlayerButton.TabIndex = 6;
+            EditPlayerButton.Text = "Save";
+            EditPlayerButton.UseVisualStyleBackColor = true;
+            EditPlayerButton.Click += EditPlayerButton_Click;
+            // 
             // PlayerEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(285, 434);
+            Controls.Add(EditPlayerButton);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -96,7 +108,7 @@
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Name = "PlayerEditForm";
-            Text = "PlayerEditForm";
+            Text = "Edit Player";
             Load += PlayerEditForm_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -110,5 +122,6 @@
         private Label label1;
         private Label label2;
         private Label label3;
+        private Button EditPlayerButton;
     }
 }

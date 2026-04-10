@@ -12,33 +12,33 @@ namespace lab2.Classes
         public virtual Player player {  get; set; }
         public double assistsPerGame { get; set; }
         public double threePointPercentage { get; set; }
-        public PointGuard(int id, string name, int height, int jerseyNumber, string type, double apg, double tpp) : base(id, name, height, jerseyNumber, type)
+
+        public double getAssistsPerGame() { return assistsPerGame; }
+        public double getThreePointPercentage() { return threePointPercentage; }
+        public PointGuard(int id, string name, int height, int jerseyNumber, Type type, double apg, double tpp) : base(id, name, height, jerseyNumber, type)
         {
             assistsPerGame = apg;
             threePointPercentage = tpp;
-            Console.WriteLine("Point Guard is created");
         }
-        public void dribble() 
+        public string dribble() 
         {
-            Console.WriteLine($"{Name} is dribbling the ball.");
+            return $"{Name} is dribbling the ball.";
         }
-        public void pass()
+        public string pass()
         {
-            Console.WriteLine($"{Name} is passing the ball to a teammate.");
+            return $"{Name} is passing the ball to a teammate.";
         }
-        public override void play()
+        public override string play()
         {
-            Console.WriteLine($"{Name} is orchestrating the offense, making plays and hitting three-pointers.");
+            return $"{Name} is orchestrating the offense, making plays and hitting three-pointers.";
         }
-        public override void train()
+        public override string train()
         {
-            Console.WriteLine($"{Name} is training on ball handling, passing and shooting three-pointers.");
+            return $"{Name} is training on ball handling, passing and shooting three-pointers.";
         }
-        public override void printInfo()
+        public override string printInfo()
         {
-            base.printInfo();
-            Console.WriteLine($"Assists per game : {assistsPerGame}");
-            Console.WriteLine($"Three-point percentage : {threePointPercentage}%");
+            return base.printInfo() + $"\nAssists per game : {assistsPerGame}" + $"\nThree-point percentage : {threePointPercentage}%";
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace lab2
 {
-    partial class Form2
+    partial class PlayerCreateForm
     {
         /// <summary>
         /// Required designer variable.

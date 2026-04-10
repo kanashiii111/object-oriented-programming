@@ -14,54 +14,55 @@ namespace lab2.Classes
         public double reboundsPerGame { get; set; }
         public int blocks { get; set; } = 0;
         public int rebounds { get; set; } = 0;
-        public Center(int id, string name, int height, int jerseyNumber, string type, double bpg, double rpg) : base(id, name, height, jerseyNumber, type)
+
+        public int getBlocks() { return blocks; }
+        public int getRebounds() { return rebounds; }
+        public double getBlocksPerGame() { return blocksPerGame; }
+        public double getReboundsPerGame() { return reboundsPerGame; }
+        public Center(int id, string name, int height, int jerseyNumber, Type type, double bpg, double rpg) : base(id, name, height, jerseyNumber, type)
         {
             blocksPerGame = bpg;
             reboundsPerGame = rpg;
-            Console.WriteLine("Center is created");
         }
 
-        public Center(int id, string name, int height, int jerseyNumber, string type, int blocks, int rebounds, double bpg, double rpg) : base(id, name, height, jerseyNumber, type) 
+        public Center(int id, string name, int height, int jerseyNumber, Type type, int blocks, int rebounds, double bpg, double rpg) : base(id, name, height, jerseyNumber, type) 
         {
             blocksPerGame = bpg;
             reboundsPerGame = rpg;
             this.blocks = blocks;
-            Console.WriteLine("Center is created with blocks");
         }
 
-        public void block() 
+        public string block() 
         {
             blocks++;
-            Console.WriteLine($"blocks: {blocks}");
+            return $"blocks: {blocks}";
         }
-        public void rebound() 
+        public string rebound() 
         {
             rebounds++;
-            Console.WriteLine($"rebounds: {rebounds}");
+            return $"rebounds: {rebounds}";
         }
 
-        public void setScreen() 
+        public string setScreen() 
         {
-            Console.WriteLine($"{Name} sets a screen for a teammate.");
+            return $"{Name} sets a screen for a teammate.";
         }
 
-        public void post() 
+        public string post() 
         {
-            Console.WriteLine($"{Name} is posting up in the paint.");
+            return $"{Name} is posting up in the paint.";
         }
-        public override void play()
+        public override string play()
         {
-            Console.WriteLine($"{Name} dominates the post, blocks and dunks the ball.");
+            return $"{Name} dominates the post, blocks and dunks the ball.";
         }
-        public override void train()
+        public override string train()
         {
-            Console.WriteLine($"{Name} is training playing close to basket, rebounding and blocking shots.");
+            return $"{Name} is training playing close to basket, rebounding and blocking shots.";
         }
-        public override void printInfo()
+        public override string printInfo()
         {
-            base.printInfo();
-            Console.WriteLine($"Blocks per game : {blocksPerGame}");
-            Console.WriteLine($"Rebounds per game : {reboundsPerGame}");
+            return base.printInfo() + $"\nBlocks: {blocks}" + $"\nRebounds : {rebounds}" +  $"\nBlocks per game : {blocksPerGame}" + $"\nRebounds per game : {reboundsPerGame}";
         }
     }
 }

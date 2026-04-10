@@ -1,6 +1,6 @@
 ﻿namespace lab2
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -38,6 +38,7 @@
             AddPlayerButton = new Button();
             DeleteButton = new Button();
             PlayerEditButton = new Button();
+            PlayerMethodsButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -110,19 +111,30 @@
             DeleteButton.UseVisualStyleBackColor = true;
             DeleteButton.Click += DeleteButton_Click;
             // 
-            // button1
+            // PlayerEditButton
             // 
             PlayerEditButton.Location = new Point(12, 367);
-            PlayerEditButton.Name = "button1";
+            PlayerEditButton.Name = "PlayerEditButton";
             PlayerEditButton.Size = new Size(109, 26);
             PlayerEditButton.TabIndex = 9;
             PlayerEditButton.Text = "Edit Player";
             PlayerEditButton.UseVisualStyleBackColor = true;
             PlayerEditButton.Click += PlayerEditButton_Click;
             // 
+            // PlayerMethodsButton
+            // 
+            PlayerMethodsButton.Location = new Point(12, 434);
+            PlayerMethodsButton.Name = "PlayerMethodsButton";
+            PlayerMethodsButton.Size = new Size(109, 27);
+            PlayerMethodsButton.TabIndex = 10;
+            PlayerMethodsButton.Text = "Player methods";
+            PlayerMethodsButton.UseVisualStyleBackColor = true;
+            PlayerMethodsButton.Click += PlayerMethodsButton_Click;
+            // 
             // Form1
             // 
             ClientSize = new Size(1655, 776);
+            Controls.Add(PlayerMethodsButton);
             Controls.Add(PlayerEditButton);
             Controls.Add(DeleteButton);
             Controls.Add(AddPlayerButton);
@@ -145,5 +157,6 @@
         private DataGridViewTextBoxColumn PlayerType;
         private DataGridViewTextBoxColumn PlayerInfo;
         private Button PlayerEditButton;
+        private Button PlayerMethodsButton;
     }
 }

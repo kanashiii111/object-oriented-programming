@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+public enum Type
+{
+    PointGuard,
+    Center
+}
+
 namespace lab2.Classes
 {
     public class Player
@@ -13,13 +19,11 @@ namespace lab2.Classes
         public string Name { get; set; }
         public int Height { get; set; }
         public int JerseyNumber { get; set; }
-
-        public string Type { get; set; }
-
+        public Type Type { get; set; }
         public virtual PointGuard? PointGuard { get; set; }
         public virtual Center? Center { get; set; }
 
-        public Player(int ID, string name, int height, int jerseyNumber, string type)
+        public Player(int ID, string name, int height, int jerseyNumber, Type type)
         {
             this.ID = ID;
             Name = name;
@@ -30,26 +34,30 @@ namespace lab2.Classes
 
         public int getID() { return ID; }
         public void setID(int newID) { ID = newID; }
+
         public string getName() { return Name; }
         public void setName(string newName) { Name = newName; }
+
         public int getHeight() { return Height; }
         public void setHeight(int newHeight) { Height = newHeight; }
+
         public int getJerseyNumber() { return JerseyNumber; }
         public void setJerseyNumber(int newJerseyNumber) { JerseyNumber = newJerseyNumber; }
 
-        public virtual void play()
+        public Type getType() { return Type; }
+        public void setType(Type newType) { Type = newType; }
+
+        public virtual string play()
         {
-            Console.WriteLine($"{Name} enters the court.");
+            return $"{Name} enters the court.";
         }
-        public virtual void train()
+        public virtual string train()
         {
-            Console.WriteLine($"{Name} is training.");
+            return $"{Name} is training.";
         }
-        public virtual void printInfo()
+        public virtual string printInfo()
         {
-            Console.WriteLine($"Name : {Name}");
-            Console.WriteLine($"Height : {Height}");
-            Console.WriteLine($"Jersey number : {JerseyNumber}");
+            return $"Name : {Name}" + $"\nHeight : {Height}" + $"\nJersey number : {JerseyNumber}";
         }
     }
 }
