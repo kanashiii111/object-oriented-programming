@@ -22,6 +22,27 @@ namespace lab2.Classes
         public Type Type { get; set; }
         public virtual PointGuard? PointGuard { get; set; }
         public virtual Center? Center { get; set; }
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is Player))
+            {
+                return false;
+            }
+            return (Name == ((Player)obj).Name
+                && (Height == ((Player)obj).Height
+                && (JerseyNumber == ((Player)obj).JerseyNumber
+                && (Type == ((Player)obj).Type
+                ))));
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() ^ Height.GetHashCode() ^ JerseyNumber.GetHashCode() ^ Type.GetHashCode();
+        }
 
         public Player(int ID, string name, int height, int jerseyNumber, Type type)
         {

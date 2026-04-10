@@ -61,10 +61,28 @@ namespace lab2
                 return;
             }
 
+
+
             Database dbContext = new Database();
-            dbContext.Edit(playerIDToEdit, newName, newHeight, newJerseyNumber);
-            MessageBox.Show("Player edited successfully!");
-            Close();
+            dbContext.ReadAll();
+            foreach(Player player in dbContext.Players)
+            {
+                if (player.Equals(new Player(0, newName, newHeight, newJerseyNumber, playerToEdit.getType()))) {
+                    MessageBox.Show("Player already exists.");
+                    textBox1.Text = playerToEdit.getName();
+                    textBox2.Text = playerToEdit.getHeight().ToString();
+                    textBox3.Text = playerToEdit.getJerseyNumber().ToString();
+                    return;
+                }
+            }
+
+            var res = MessageBox.Show($"Edit player with id {playerIDToEdit}?", "Edit", MessageBoxButtons.OKCancel);
+            if (res == DialogResult.OK)
+            {
+                dbContext.Edit(playerIDToEdit, newName, newHeight, newJerseyNumber);
+                MessageBox.Show("Player edited successfully!");
+                Close();
+            }
         }
     }
 }

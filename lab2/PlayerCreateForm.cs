@@ -56,21 +56,36 @@ namespace lab2
             }
 
             Player? newPlayer = null;
-            
+            Database dbContext = new Database();
+            dbContext.ReadAll();
+
             if (comboBox1.SelectedIndex == 0)
             {
                 newPlayer = new Player(0, name, height, jerseyNumber, Type.PointGuard);
+                foreach (Player player in dbContext.Players)
+                {
+                    if (newPlayer.Equals(player))
+                    {
+                        MessageBox.Show("Player already exists.");
+                        return;
+                    }
+                }
                 PointGuard newPG = new PointGuard(0, name, height, jerseyNumber, Type.PointGuard, 0.0, 0.0);
                 newPlayer.PointGuard = newPG;
             } else
             {
                 newPlayer = new Player(0, name, height, jerseyNumber, Type.Center);
+                foreach (Player player in dbContext.Players)
+                {
+                    if (newPlayer.Equals(player))
+                    {
+                        MessageBox.Show("Player already exists.");
+                        return;
+                    }
+                }
                 Center newC = new Center(0, name, height, jerseyNumber, Type.Center, 0, 0, 0.0, 0.0);
                 newPlayer.Center = newC;
             }
-
-
-            Database dbContext = new Database();
             dbContext.Add(newPlayer);
 
             MessageBox.Show("Player added successfully!");
