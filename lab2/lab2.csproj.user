@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PlayerCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PlayerCenterMethodsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PlayerEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PlayerPointGuardMethodsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
