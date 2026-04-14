@@ -71,7 +71,7 @@ namespace lab2
                     }
                 }
                 PointGuard newPG = new PointGuard(0, name, height, jerseyNumber, Type.PointGuard, 0.0, 0.0);
-                newPlayer.PointGuard = newPG;
+                newPlayer.setPointGuard(newPG);
             } else
             {
                 newPlayer = new Player(0, name, height, jerseyNumber, Type.Center);
@@ -84,7 +84,7 @@ namespace lab2
                     }
                 }
                 Center newC = new Center(0, name, height, jerseyNumber, Type.Center, 0, 0, 0.0, 0.0);
-                newPlayer.Center = newC;
+                newPlayer.setCenter(newC);
             }
             dbContext.Add(newPlayer);
 

@@ -68,6 +68,12 @@ namespace lab2.Classes
         public Type getType() { return Type; }
         public void setType(Type newType) { Type = newType; }
 
+        public PointGuard? getPointGuard() { return PointGuard; }
+        public void setPointGuard(PointGuard newPointGuard) { PointGuard = newPointGuard; }
+
+        public Center? getCenter() { return Center; }
+        public void setCenter(Center newCenter) { Center = newCenter; }
+
         public virtual string play()
         {
             return $"{Name} enters the court.";

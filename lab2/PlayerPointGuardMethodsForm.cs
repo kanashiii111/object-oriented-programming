@@ -27,31 +27,31 @@ namespace lab2
 
         private void PlayMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.PointGuard?.play() + Environment.NewLine);
+            console.AppendText(player.getPointGuard()?.play() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void TrainMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.PointGuard?.train() + Environment.NewLine);
+            console.AppendText(player.getPointGuard()?.train() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void PrintInfoMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.PointGuard?.printInfo() + Environment.NewLine);
+            console.AppendText(player.getPointGuard()?.printInfo() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void DribbleMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.PointGuard?.dribble() + Environment.NewLine);
+            console.AppendText(player.getPointGuard()?.dribble() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void PassMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.PointGuard?.pass() + Environment.NewLine);
+            console.AppendText(player.getPointGuard()?.pass() + Environment.NewLine);
             console.ScrollToCaret();
         }
 

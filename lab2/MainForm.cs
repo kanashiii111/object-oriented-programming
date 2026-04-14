@@ -34,15 +34,15 @@ namespace lab2
                 string cInfo = string.Empty;
                 string playerInfo = string.Empty;
 
-                if (player.Type == Type.PointGuard)
+                if (player.getType() == Type.PointGuard)
                 {
-                    pgInfo = string.Format("apg: {0}, tpp: {1}", player.PointGuard.assistsPerGame, player.PointGuard.threePointPercentage);
+                    pgInfo = string.Format("apg: {0}, tpp: {1}", player.getPointGuard()?.getAssistsPerGame(), player.getPointGuard()?.getThreePointPercentage());
 
                     playerInfo = pgInfo;
                 }
-                else if (player.Type == Type.Center)
+                else if (player.getType() == Type.Center)
                 {
-                    cInfo = string.Format("blocks: {0}, rebounds: {1}, bpg: {2}, rpg: {3}", player.Center.blocks, player.Center.rebounds, player.Center.blocksPerGame, player.Center.reboundsPerGame);
+                    cInfo = string.Format("blocks: {0}, rebounds: {1}, bpg: {2}, rpg: {3}", player.getCenter()?.getBlocks(), player.getCenter()?.getRebounds(), player.getCenter()?.getBlocksPerGame(), player.getCenter()?.getReboundsPerGame());
 
                     playerInfo = cInfo;
                 }

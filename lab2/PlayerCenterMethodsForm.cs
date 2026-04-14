@@ -27,25 +27,25 @@ namespace lab2
 
         private void PlayMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.play() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.play() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void TrainMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.train() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.train() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void PrintInfoMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.printInfo() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.printInfo() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void BlockMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.block() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.block() + Environment.NewLine);
             console.ScrollToCaret();
             Database dbContext = new Database();
             dbContext.Update(player);
@@ -53,7 +53,7 @@ namespace lab2
 
         private void ReboundMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.rebound() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.rebound() + Environment.NewLine);
             console.ScrollToCaret();
             Database dbContext = new Database();
             dbContext.Update(player);
@@ -61,13 +61,13 @@ namespace lab2
 
         private void SetScreenMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.setScreen() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.setScreen() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
         private void PostMethodButton_Click(object sender, EventArgs e)
         {
-            console.AppendText(player.Center?.post() + Environment.NewLine);
+            console.AppendText(player.getCenter()?.post() + Environment.NewLine);
             console.ScrollToCaret();
         }
 
