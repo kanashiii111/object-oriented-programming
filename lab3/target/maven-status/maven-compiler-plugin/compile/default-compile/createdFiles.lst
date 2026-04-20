@@ -1,1 +1,14 @@
+org\oop\lab3\dto\PlayerMapperImpl.class
+org\oop\lab3\dto\CenterDTO.class
+org\oop\lab3\entities\Player.class
+org\oop\lab3\repositories\PlayerRepository.class
+org\oop\lab3\entities\Player$Type.class
+org\oop\lab3\controllers\PlayerController.class
 org\oop\lab3\Lab3.class
+org\oop\lab3\entities\PointGuard.class
+org\oop\lab3\services\PlayerService.class
+org\oop\lab3\dto\PointGuardDTO.class
+org\oop\lab3\dto\PlayerDTO.class
+org\oop\lab3\dto\PlayerMapper.class
+org\oop\lab3\entities\Center.class
+org\oop\lab3\Application.class
