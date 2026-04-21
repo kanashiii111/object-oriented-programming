@@ -40,4 +40,9 @@ public class PlayerService {
         }
         return playerMapper.toDTO(playerRepository.save(player));
     }
+
+    public void deletePlayerByID(PlayerDTO dto) {
+        Player player = playerMapper.toEntity(dto);
+        playerRepository.deleteById(player.getId());
+    }
 }
