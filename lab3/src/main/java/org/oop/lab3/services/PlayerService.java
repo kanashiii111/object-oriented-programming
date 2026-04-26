@@ -8,7 +8,9 @@ import org.oop.lab3.dto.PlayerMapper;
 import org.oop.lab3.entities.Center;
 import org.oop.lab3.entities.Player;
 import org.oop.lab3.entities.PointGuard;
+import org.oop.lab3.entities.Team;
 import org.oop.lab3.repositories.PlayerRepository;
+import org.oop.lab3.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,21 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
     @Autowired
+    private TeamRepository teamRepository;
+    @Autowired
     private PlayerMapper playerMapper;
+
+    public boolean checkDuplicates(Player player) {
+        Iterable<Player> players = playerRepository.findAll();
+        List<Player> playersList= new ArrayList<>();
+        players.forEach(playersList::add);
+        for (Player listPlayer: players) {
+            if (listPlayer.equals(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<PlayerDTO> getPlayers() {
         Iterable<Player> players = playerRepository.findAll();
@@ -30,6 +46,11 @@ public class PlayerService {
 
     public PlayerDTO savePlayer(PlayerDTO dto) {
         Player player = playerMapper.toEntity(dto);
+    
+        if (dto.getTeamId() != null) {
+            Team team = teamRepository.findById(dto.getTeamId()).orElseThrow(() -> new RuntimeException("Team not found"));
+            player.setTeam(team);
+        }
         
         if (player.getType() == Player.Type.point_guard) {
             player.setPointGuard( new PointGuard(0.0f, 0.0f));
@@ -41,9 +62,13 @@ public class PlayerService {
         return playerMapper.toDTO(playerRepository.save(player));
     }
 
-    public void deletePlayerByID(PlayerDTO dto) {
+    public void deletePlayer(PlayerDTO dto) {
         Player player = playerMapper.toEntity(dto);
         playerRepository.deleteById(player.getId());
+    }
+
+    public void deletePlayerByID(Long id) {
+        playerRepository.deleteById(id);
     }
 
     public PlayerDTO editPlayerByID(PlayerDTO dto) {

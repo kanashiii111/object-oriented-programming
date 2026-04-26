@@ -29,7 +29,7 @@ public class PlayerApiController {
     }
     @DeleteMapping
     public void deletePlayer(@RequestBody PlayerDTO playerDTO) {
-        playerService.deletePlayerByID(playerDTO);
+        playerService.deletePlayer(playerDTO);
     }
     @PutMapping
     public PlayerDTO updatePlayer(@RequestBody PlayerDTO playerDTO) {

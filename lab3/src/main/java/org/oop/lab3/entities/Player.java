@@ -1,13 +1,19 @@
 package org.oop.lab3.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -53,6 +59,11 @@ public class Player {
     @Enumerated(EnumType.ORDINAL)
     private Type type;
 
+    @OnDelete(action=OnDeleteAction.SET_NULL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     public Long getId() { return id; }
     public Center getCenter() { return center; }
     public PointGuard getPointGuard() { return point_guard; }
@@ -60,6 +71,7 @@ public class Player {
     public Integer getHeight() { return height; }
     public Integer getJerseyNumber() { return jersey_number; }
     public Type getType() { return type; }
+    public Team getTeam() { return team; }
 
     public void setId( Long id ) { this.id = id; }
     public void setCenter( Center center ) { this.center = center; }
@@ -68,4 +80,5 @@ public class Player {
     public void setHeight( Integer height ) { this.height = height; }
     public void setJerseyNumber( Integer jersey_number ) { this.jersey_number = jersey_number; }
     public void setType( Type type ) { this.type = type; }
+    public void setTeam( Team team ) { this.team = team; }
 }
