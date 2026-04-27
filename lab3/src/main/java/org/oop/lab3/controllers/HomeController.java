@@ -10,65 +10,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/home")
 public class HomeController {
     @Autowired
     private PlayerService playerService;
     @Autowired
     private TeamService teamService;
     
-    @GetMapping
-    public String homePage(Model uiModel) {
+    @GetMapping("/home")
+    public String homePage(Model model) {
         List<PlayerDTO> players = playerService.getPlayers();
         List<TeamDTO> teams = teamService.getTeams();
-        uiModel.addAttribute("players", players);
-        uiModel.addAttribute("teams", teams);
+        model.addAttribute("players", players);
+        model.addAttribute("teams", teams);
         return "home_page";
     }
 
     @GetMapping("/create/player")
-    public String createPlayerPage(Model uiModel) {
+    public String createPlayerPage(Model model) {
         List<TeamDTO> teams = teamService.getTeams();
-        uiModel.addAttribute("player", new PlayerDTO());
-        uiModel.addAttribute("teams", teams);
+        model.addAttribute("teams", teams);
         return "create_player_page";
     }
 
-    @PostMapping("/create/player")
-    public String createPlayerSubmit(@ModelAttribute("player") PlayerDTO playerDTO) {
-        playerService.savePlayer(playerDTO);
-        return "redirect:/home";
+    @GetMapping("/edit/player/{id}")
+    public String editPlayerPage(@PathVariable Long id, Model model) {
+        PlayerDTO player = playerService.getPlayerByID(id);
+        List<TeamDTO> teams = teamService.getTeams();
+        model.addAttribute("player", player);
+        model.addAttribute("teams", teams);
+        return "edit_player_page";
     }
 
-    @PostMapping("/delete/player/{id}")
-    public String deletePlayerSubmit(@PathVariable Long id) {
-        playerService.deletePlayerByID(id);
-        return "redirect:/home";
+    @GetMapping("/methods/player/{id}")
+    public String playerMethodsPage(@PathVariable Long id, Model model) {
+        PlayerDTO player = playerService.getPlayerByID(id);
+        model.addAttribute("player", player);
+        return "player_methods_page";
     }
 
     // --------- team ----------
 
     @GetMapping("/create/team")
-    public String createTeamPage(Model uiModel) {
-        uiModel.addAttribute("team", new TeamDTO());
+    public String createTeamPage() {
         return "create_team_page";
     }
 
-    @PostMapping("/create/team")
-    public String createTeamSubmit(@ModelAttribute("team") TeamDTO teamDTO) {
-        teamService.saveTeam(teamDTO);
-        return "redirect:/home";
-    }
-
-    @PostMapping("/delete/team/{id}")
-    public String deleteTeamSubmit(@PathVariable Long id) {
-        teamService.deleteTeamById(id);
-        return "redirect:/home";
+    @GetMapping("/edit/team/{id}")
+    public String editTeamPage(@PathVariable Long id, Model model) {
+        TeamDTO team = teamService.getTeamByID(id);
+        model.addAttribute("team", team);
+        return "edit_team_page";
     }
 }

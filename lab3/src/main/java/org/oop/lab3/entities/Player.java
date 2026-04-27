@@ -16,10 +16,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="players")
-public class Player {
+@Table(
+    name="players",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"name"})
+)
+public class Player implements Playable {
 
     public Player() {}
 
@@ -60,9 +64,40 @@ public class Player {
     private Type type;
 
     @OnDelete(action=OnDeleteAction.SET_NULL)
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+
+    @Override
+    public String play() {
+        if (type == Type.center && center != null) {
+            return center.play();
+        } else if (type == Type.point_guard && point_guard != null) {
+            return point_guard.play();
+        }
+        return String.format("%s enters the court.", name);
+    }
+    @Override
+    public String train() {
+        if (type == Type.center && center != null) {
+            return center.train();
+        } else if (type == Type.point_guard && point_guard != null) {
+            return point_guard.train();
+        }
+        return String.format("%s is training", name);
+    }
+    public String getBasicInfo() {
+        return String.format("Name: %s\nHeight: %d\nJersey number: %d\n", name, height, jersey_number);
+    }
+    @Override
+    public String printInfo() {
+        if (type == Type.center && center != null) {
+            return center.printInfo();
+        } else if (type == Type.point_guard && point_guard != null) {
+            return point_guard.printInfo();
+        }
+        return String.format("Name: %s\nHeight: %d\nJersey number: %d", name, height, jersey_number);
+    }
 
     public Long getId() { return id; }
     public Center getCenter() { return center; }

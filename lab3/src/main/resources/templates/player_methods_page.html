@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/player_methods_styles.css}"/>
+    <script th:src="@{/js/player_methods_scripts.js}" defer></script>
+    <meta charset="UTF-8">
+    <title>Управление игроком</title>
+</head>
+<body>
+    <h1>Панель управления: <span th:text="${player.name}">Игрок</span></h1>
+
+    <div class="controls">
+        <button th:onclick="'executeMethod(' + ${player.id} + ', \'play\')'">PLAY</button>
+        <button th:onclick="'executeMethod(' + ${player.id} + ', \'train\')'">TRAIN</button>
+        <button th:onclick="'executeMethod(' + ${player.id} + ', \'printInfo\')'">PRINT INFO</button>
+        <div class="center-controls" th:if="${player.center != null}">
+            <button th:onclick="'executeMethod(' + ${player.id} + ', \'block\')'">BLOCK</button>
+            <button th:onclick="'executeMethod(' + ${player.id} + ', \'rebound\')'">REBOUND</button>
+            <button th:onclick="'executeMethod(' + ${player.id} + ', \'setScreen\')'">SETSCREEN</button>
+            <button th:onclick="'executeMethod(' + ${player.id} + ', \'post\')'">POST</button>
+        </div>
+        <div class="center-controls" th:if="${player.pointGuard != null}">
+            <button th:onclick="'executeMethod(' + ${player.id} + ', \'dribble\')'">DRIBBLE</button>
+            <button th:onclick="'executeMethod(' + ${player.id} + ', \'pass\')'">PASS</button>
+        </div>
+        <button class="clear-btn" onclick="clearTerminal()">Очистить</button>
+        <a th:href="@{/home}" style="margin-left: 20px; color: #444;">Назад</a>
+    </div>
+
+    <div id="terminal">
+        <div class="response-line">Система готова. Ожидание команды...</div>
+    </div>
+</body>
+</html> 

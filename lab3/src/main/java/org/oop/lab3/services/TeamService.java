@@ -26,6 +26,12 @@ public class TeamService {
             .toList();
     }
 
+    public TeamDTO getTeamByID(Long id) {
+        Team team = teamRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Team not found with id: " + id));
+        return teamMapper.toDTO(team);
+    }
+
     public TeamDTO saveTeam(TeamDTO dto) {
         Team team = teamMapper.toEntity(dto);
         return teamMapper.toDTO(teamRepository.save(team));

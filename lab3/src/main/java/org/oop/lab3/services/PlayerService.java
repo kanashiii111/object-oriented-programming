@@ -23,18 +23,6 @@ public class PlayerService {
     @Autowired
     private PlayerMapper playerMapper;
 
-    public boolean checkDuplicates(Player player) {
-        Iterable<Player> players = playerRepository.findAll();
-        List<Player> playersList= new ArrayList<>();
-        players.forEach(playersList::add);
-        for (Player listPlayer: players) {
-            if (listPlayer.equals(player)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public List<PlayerDTO> getPlayers() {
         Iterable<Player> players = playerRepository.findAll();
         List<Player> playersList= new ArrayList<>();
@@ -42,6 +30,12 @@ public class PlayerService {
         return playersList.stream()
             .map(playerMapper::toDTO)
             .toList();
+    }
+
+    public PlayerDTO getPlayerByID(Long id) {
+        Player player = playerRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
+        return playerMapper.toDTO(player);
     }
 
     public PlayerDTO savePlayer(PlayerDTO dto) {
@@ -71,8 +65,46 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-    public PlayerDTO editPlayerByID(PlayerDTO dto) {
-        Player player = playerMapper.toEntity(dto);
+    public PlayerDTO editPlayer(PlayerDTO dto) {
+        Player player = playerRepository.findById(dto.getId())
+            .orElseThrow(() -> new RuntimeException("Player not found"));
+        
+        player.setName(dto.getName());
+        player.setHeight(dto.getHeight());
+        player.setJerseyNumber(dto.getJerseyNumber());
+        
+        String type = dto.getType();
+        Player.Type trueType = (type.equals("center")) ? Player.Type.center : Player.Type.point_guard;
+        player.setType(trueType);
+
+        if (player.getType() == Player.Type.center && dto.getCenter() != null) {
+            Center center = player.getCenter();
+            if (center == null) center = new Center();
+            
+            center.setBlocks(dto.getCenter().getBlocks());
+            center.setRebounds(dto.getCenter().getRebounds());
+            center.setBlocksPerGame(dto.getCenter().getBlocksPerGame());
+            center.setReboundsPerGame(dto.getCenter().getReboundsPerGame());
+            center.setPlayer(player);
+            player.setCenter(center);
+        } 
+        else if (player.getType() == Player.Type.point_guard && dto.getPointGuard() != null) {
+            PointGuard pg = player.getPointGuard();
+            if (pg == null) pg = new PointGuard();
+            
+            pg.setAssistsPerGame(dto.getPointGuard().getAssistsPerGame());
+            pg.setThreePointPercentage(dto.getPointGuard().getThreePointPercentage());
+            pg.setPlayer(player);
+            player.setPointGuard(pg);
+        }
+
+        if (dto.getTeamId() != null) {
+            Team team = teamRepository.findById(dto.getTeamId()).orElse(null);
+            player.setTeam(team);
+        } else {
+            player.setTeam(null);
+        }
+        
         return playerMapper.toDTO(playerRepository.save(player));
     }
 }

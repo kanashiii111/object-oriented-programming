@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="point_guards")
-public class PointGuard{
+public class PointGuard implements Playable {
 
     public PointGuard() {}
 
@@ -32,6 +32,29 @@ public class PointGuard{
 
     @Column(name="three_point_percentage")
     private Float three_point_percentage;
+
+    public String dribble() {
+        return String.format("%s is dribbling the ball", player.getName());
+    }
+
+    public String pass() {
+        return String.format("%s is passing the ball to a teammate.", player.getName());
+    }
+
+    @Override
+    public String play() {
+        return String.format("%s is orchestrating the offense, making plays and hitting three-pointers.", player.getName());
+    }
+
+    @Override
+    public String train() {
+        return String.format("%s is training on ball handling, passing and shooting three-pointers.", player.getName());
+    }
+
+    @Override
+    public String printInfo() {
+        return player.getBasicInfo() + String.format("APG: %f\nTPP: %f", assists_per_game, three_point_percentage);
+    }
 
     public Long getId() { return id; }
     public Player getPlayer() { return player; }

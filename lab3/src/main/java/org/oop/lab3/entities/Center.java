@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="centers")
-public class Center{
+public class Center implements Playable{
 
     public Center() {}
 
@@ -40,6 +40,39 @@ public class Center{
 
     @Column(name="rebounds_per_game")
     private Float rebounds_per_game;
+
+    public String block() {
+        blocks++;
+        return String.format("blocks: %d", blocks);
+    }
+
+    public String rebound() {
+        rebounds++;
+        return String.format("rebounds: %d", rebounds);
+    }
+
+    public String setScreen() {
+        return String.format("%s sets a screen", player.getName());
+    }
+
+    public String post() {
+        return String.format("%s is posting up in the paint", player.getName());
+    }
+
+    @Override
+    public String play() {
+        return String.format("%s dominates the post, blocks and dunks the ball.", player.getName());
+    }
+
+    @Override
+    public String train() {
+        return String.format("%s is training playing close to basket, rebounding and blocking shots.", player.getName());
+    }
+
+    @Override
+    public String printInfo() {
+        return player.getBasicInfo() + String.format("Blocks: %d\nRebounds: %d\nBPG: %f\nRPG: %f", blocks, rebounds, blocks_per_game, rebounds_per_game);
+    }
 
     public Long getId() { return id; }
     public Player getPlayer() { return player; }

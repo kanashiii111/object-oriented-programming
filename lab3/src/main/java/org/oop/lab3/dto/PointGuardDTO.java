@@ -11,7 +11,31 @@ import lombok.Data;
     "three_point_percentage",
 })
 public class PointGuardDTO {
-    public Long id;
-    public Float assistsPerGame;
-    public Float threePointPercentage;
+    private Long id;
+    private Float assistsPerGame;
+    private Float threePointPercentage;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Float getAssistsPerGame() {
+        return assistsPerGame;
+    }
+
+    public void setAssistsPerGame(Float assistsPerGame) {
+        this.assistsPerGame = assistsPerGame;
+    }
+
+    public Float getThreePointPercentage() {
+        return threePointPercentage;
+    }
+
+    public void setThreePointPercentage(Float threePointPercentage) {
+        this.threePointPercentage = threePointPercentage;
+    }
 }

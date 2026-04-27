@@ -3,109 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Home - Players List</title>
-        <style>
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-bottom: 20px;
-            }
-            th, td {
-                border: 1px solid #ddd;
-                padding: 12px;
-                text-align: left;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            .player_row.selectedPlayer {
-                background-color: #2196F3;
-                color: #ffffff;
-            }
-            .player_row:hover {
-                background-color: gray;
-            }
-            .player_row.selectedPlayer:hover {
-                background-color: #0b7dda !important;
-            }
-            .team_row.selectedTeam {
-                background-color: #2196F3;
-                color: #ffffff;
-            }
-            .team_row:hover {
-                background-color: gray;
-            }
-            .team_row.selectedTeam:hover {
-                background-color: #0b7dda !important;
-            }
-            .position-stats {
-                margin-top: 10px;
-                padding-left: 20px;
-                border-left: 3px solid #007bff;
-            }
-        </style>
-        <script>
-            let currentlySelectedPlayer = null;
-            let currentlySelectedTeam = null;
-            let playerId = null;
-            let teamId = null;
-            
-            function selectPlayer(row) {
-                if (currentlySelectedPlayer) {
-                    currentlySelectedPlayer.classList.remove('selectedPlayer');
-                }
-                
-                row.classList.add('selectedPlayer');
-                currentlySelectedPlayer = row;
-                
-                playerId = currentlySelectedPlayer.getAttribute('data-id');
-            }
-
-            function selectTeam(row) {
-                if (currentlySelectedTeam) {
-                    currentlySelectedTeam.classList.remove('selectedTeam');
-                }
-                
-                row.classList.add('selectedTeam');
-                currentlySelectedTeam = row;
-                
-                teamId = currentlySelectedTeam.getAttribute('data-id');
-            }
-
-            function deleteSelectedPlayer() {
-                if (playerId) {
-                    if (confirm("Вы уверены, что хотите удалить этого игрока?")) {
-                        fetch(`/home/delete/player/${playerId}`, {
-                            method: 'POST'
-                        }).then(response => {
-                            if (response.ok) {
-                                location.reload();
-                            }
-                        });
-                    }
-                } else {
-                    alert("Выберите игрока");
-                }
-            }
-
-            function deleteSelectedTeam() {
-                if (teamId) {
-                    if (confirm("Вы уверены, что хотите удалить эту команду?")) {
-                        fetch(`/home/delete/team/${teamId}`, {
-                            method: 'POST'
-                        }).then(response => {
-                            if (response.ok) {
-                                location.reload();
-                            }
-                        });
-                    }
-                } else {
-                    alert("Выберите команду");
-                }
-            }
-        </script>
+        <link rel="stylesheet" th:href="@{/css/home_page_styles.css}"/>
+        <script th:src="@{/js/home_page_scripts.js}" defer></script>
     </head>
     <body>
-
         <h1>Teams List</h1>
         <table>
             <thead>
@@ -113,19 +14,25 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>City</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="team: ${teams}" onclick="selectTeam(this)" th:data-id="${team.id}" class="team_row">
+                <tr th:each="team: ${teams}" th:data-id="${team.id}" class="team_row">
                     <td th:text="${team.id}"></td>
                     <td th:text="${team.name}"></td>
                     <td th:text="${team.city}"></td>
+                    <td>
+                        <div class="team-action-btns">
+                            <button th:onclick="'redirectToUpdateTeamForm(' + ${team.id} + ')'">Edit</button>
+                            <button th:onclick="'deleteSelectedTeam(' + ${team.id} + ')'">Delete</button>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <a th:href="@{/home/create/team}" type="button">Создать новую команду</a><br>
-        <button onclick="deleteSelectedTeam()">Удалить выделенную команду</button>
+        <button onclick="redirectToCreateTeamForm()">Создать новую команду</button>
 
         <!-- Players -->
 
@@ -136,14 +43,15 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Height (cm)</th>
-                    <th>Jersey #</th>
+                    <th>Jersey number #</th>
                     <th>Type</th>
                     <th>Team ID</th>
                     <th>Position Specific Stats</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="player: ${players}" onclick="selectPlayer(this)" th:data-id="${player.id}" class="player_row">
+                <tr th:each="player: ${players}" th:data-id="${player.id}" class="player_row">
                     <td th:text="${player.id}"></td>
                     <td th:text="${player.name}"></td>
                     <td th:text="${player.height}"></td>
@@ -165,11 +73,17 @@
                             3PT %: <span th:text="${player.pointGuard.threePointPercentage}"></span>
                         </div>
                     </td>
+                    <td>
+                        <div class="player-action-btns">
+                            <button th:onclick="'redirectToPlayerMethods(' + ${player.id} + ')'">Methods</button>
+                            <button th:onclick="'redirectToUpdatePlayerForm(' + ${player.id} + ')'">Edit</button>
+                            <button th:onclick="'deleteSelectedPlayer(' + ${player.id} + ')'">Delete</button>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <a th:href="@{/home/create/player}" type="button">Создать нового игрока</a><br>
-        <button onclick="deleteSelectedPlayer()">Удалить выделенного игрока</button>
+        <button onclick="redirectToCreatePlayerForm()">Создать нового игрока</button>
     </body>
 </html>

@@ -2,31 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>Создание команды</title>
+        <title>Редактирование команды</title>
         <link rel="stylesheet" th:href="@{/css/create_team_styles.css}"/>
-        <script th:src="@{/js/create_team_scripts.js}" defer></script>
+        <script th:src="@{/js/edit_team_scripts.js}" defer></script>
     </head>
     <body>
-        <h1>Создание новой команды</h1>
+        <h1>Редактирование команды</h1>
 
         <div id="errorContainer" class="error-message" style="display: none;"></div><br>
         
         <form id="teamForm">
+
+            <input type="hidden" id="teamId" th:value="${team.id}">
             
             <div class="form-group">
                 <label>Имя:</label>
-                <input type="text" name="name" id="name" required/>
+                <input type="text" name="name" id="name" th:value="${team.name}" required/>
                 <span class="field-error" id="nameError"></span>
             </div>
             
             <div class="form-group">
                 <label>Город:</label>
-                <input type="text" name="city" id="city" required/>
+                <input type="text" name="city" id="city" th:value="${team.city}" required/>
                 <span class="field-error" id="cityError"></span>
             </div>
             
             <div class="form-group">
-                <button type="submit">Создать команду</button>
+                <button type="submit">Сохранить команду</button>
                 <a th:href="@{/home}">Отмена</a>
             </div>
 

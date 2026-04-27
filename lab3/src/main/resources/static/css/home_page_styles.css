@@ -1,0 +1,38 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+.player_row.selectedPlayer {
+    background-color: #2196F3;
+    color: #ffffff;
+}
+.player_row:hover {
+    background-color: gray;
+}
+.player_row.selectedPlayer:hover {
+    background-color: #0b7dda !important;
+}
+.team_row.selectedTeam {
+    background-color: #2196F3;
+    color: #ffffff;
+}
+.team_row:hover {
+    background-color: gray;
+}
+.team_row.selectedTeam:hover {
+    background-color: #0b7dda !important;
+}
+.position-stats {
+    margin-top: 10px;
+    padding-left: 20px;
+    border-left: 3px solid #007bff;
+}
