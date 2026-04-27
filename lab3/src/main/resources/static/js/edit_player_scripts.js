@@ -28,11 +28,11 @@ async function submitPlayer(event) {
     if (event) event.preventDefault();
 
     const formData = {
-        id: document.getElementById('playerId').value,
+        id: parseInt(document.getElementById('playerId').value),
+        type: document.getElementById('playerType').value,
         name: document.getElementById('name').value,
         height: parseInt(document.getElementById('height').value),
         jersey_number: parseInt(document.getElementById('jerseyNumber').value),
-        type: document.getElementById('type').value,
         team_id: parseInt(document.getElementById('teamId').value)
     }
 
