@@ -30,6 +30,7 @@ namespace lab2.Classes
             blocksPerGame = bpg;
             reboundsPerGame = rpg;
             this.blocks = blocks;
+            this.rebounds = rebounds;
         }
 
         public string block() 
