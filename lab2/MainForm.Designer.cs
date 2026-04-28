@@ -39,6 +39,7 @@
             DeleteButton = new Button();
             PlayerEditButton = new Button();
             PlayerMethodsButton = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -131,15 +132,27 @@
             PlayerMethodsButton.UseVisualStyleBackColor = true;
             PlayerMethodsButton.Click += PlayerMethodsButton_Click;
             // 
-            // Form1
+            // button1
+            // 
+            button1.Location = new Point(144, 332);
+            button1.Name = "button1";
+            button1.Size = new Size(96, 29);
+            button1.TabIndex = 11;
+            button1.Text = "Refresh";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // MainForm
             // 
             ClientSize = new Size(1655, 776);
+            Controls.Add(button1);
             Controls.Add(PlayerMethodsButton);
             Controls.Add(PlayerEditButton);
             Controls.Add(DeleteButton);
             Controls.Add(AddPlayerButton);
             Controls.Add(dataGridView1);
-            Name = "Form1";
+            Name = "MainForm";
+            Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
 
@@ -158,5 +171,6 @@
         private DataGridViewTextBoxColumn PlayerInfo;
         private Button PlayerEditButton;
         private Button PlayerMethodsButton;
+        private Button button1;
     }
 }

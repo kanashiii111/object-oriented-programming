@@ -9,11 +9,11 @@ namespace lab2.Classes
     public class Center : Player
     {
         public int playerID { get; set; }
-        public virtual Player player { get; set; }
+        public virtual Player player { get; set; }  
         public double blocksPerGame { get; set; }
         public double reboundsPerGame { get; set; }
-        public int blocks { get; set; } = 0;
-        public int rebounds { get; set; } = 0;
+        public int blocks { get; set; }
+        public int rebounds { get; set; }
 
         public int getBlocks() { return blocks; }
         public int getRebounds() { return rebounds; }
@@ -23,6 +23,16 @@ namespace lab2.Classes
         {
             blocksPerGame = bpg;
             reboundsPerGame = rpg;
+            this.blocks = 1234;
+            this.rebounds = 1234;
+        }
+
+        public Center(int id, string name, int height, int jerseyNumber, Type type, int blocks, double bpg, double rpg) : base(id, name, height, jerseyNumber, type)
+        {
+            blocksPerGame = bpg;
+            reboundsPerGame = rpg;
+            this.blocks = blocks;
+            this.rebounds = 5678;
         }
 
         public Center(int id, string name, int height, int jerseyNumber, Type type, int blocks, int rebounds, double bpg, double rpg) : base(id, name, height, jerseyNumber, type) 

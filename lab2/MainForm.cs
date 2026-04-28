@@ -72,8 +72,17 @@ namespace lab2
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            int row = dataGridView1.SelectedCells[0].RowIndex;
-            int playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            int row, playerID;
+            try
+            {
+                row = dataGridView1.SelectedCells[0].RowIndex;
+                playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Сначала выделите игрока");
+                return;
+            }
             Database dbContext = new Database();
 
             var res = MessageBox.Show($"Delete player with id {playerID}?", "Delete", MessageBoxButtons.OKCancel);
@@ -89,8 +98,17 @@ namespace lab2
 
         private void PlayerEditButton_Click(object sender, EventArgs e)
         {
-            int row = dataGridView1.SelectedCells[0].RowIndex;
-            int playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            int row, playerID;
+            try
+            {
+                row = dataGridView1.SelectedCells[0].RowIndex;
+                playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Сначала выделите игрока");
+                return;
+            }
             Database dbContext = new Database();
             Player playerToEdit = dbContext.ReadOne(playerID);
             PlayerEditForm playerEditForm = new PlayerEditForm(playerToEdit, playerID);
@@ -100,19 +118,39 @@ namespace lab2
 
         private void PlayerMethodsButton_Click(object sender, EventArgs e)
         {
-            int row = dataGridView1.SelectedCells[0].RowIndex;
-            int playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            int row, playerID;
+            try
+            {
+                row = dataGridView1.SelectedCells[0].RowIndex;
+                playerID = (int)dataGridView1.Rows[row].Cells[0].Value;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Сначала выделите игрока");
+                return;
+            }
             Database dbContext = new Database();
             Player player = dbContext.ReadOne(playerID);
             if (player.getType() == Type.Center)
             {
                 PlayerCenterMethodsForm playerCenterMethodsForm = new PlayerCenterMethodsForm(player);
                 playerCenterMethodsForm.ShowDialog();
-            } else if (player.getType() == Type.PointGuard)
+            }
+            else if (player.getType() == Type.PointGuard)
             {
                 PlayerPointGuardMethodsForm playerPointGuardsMethodsForm = new PlayerPointGuardMethodsForm(player);
                 playerPointGuardsMethodsForm.ShowDialog();
             }
+            LoadDataGridView();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             LoadDataGridView();
         }
     }
