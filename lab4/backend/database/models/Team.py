@@ -6,12 +6,13 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column 
 from sqlalchemy.orm import relationship
-
-class Base(DeclarativeBase):
-    pass
+from ..base import Base
 
 class Team(Base):
     __tablename__ = "teams"
-    id = Mapped[int] = mapped_column(primary_key=True)
-    name = Mapped[str]
-    city = Mapped[str]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30), unique=True)
+    city: Mapped[str]
+
+    def __repr__(self) -> str:
+        return f"Team(id={self.id!r}, name={self.name!r}, city={self.city!r})"

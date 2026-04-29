@@ -3,3 +3,4 @@ lab2/bin/
 lab3/target
 .vs/
 *__pycache__
+.venv/
