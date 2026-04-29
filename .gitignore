@@ -2,3 +2,4 @@ lab2/obj/
 lab2/bin/
 lab3/target
 .vs/
+*__pycache__
