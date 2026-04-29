@@ -47,11 +47,41 @@ public class PlayerService {
         }
         
         if (player.getType() == Player.Type.point_guard) {
-            player.setPointGuard( new PointGuard(0.0f, 0.0f));
+
+            // КОНСТРУКТОРЫ СЮДА РАЗНЫЕ ДОБАВИТЬ НАДО И ЕЩЕ ЧТОБЫ РАБОТАЛО НЕ ТОЛЬКО ДЛЯ АПИ
+            Float apg = dto.getPointGuard().getAssistsPerGame();
+            Float tpp = dto.getPointGuard().getThreePointPercentage();
+
+            if (apg == null || tpp == null) {
+                throw new RuntimeException("PointGuard needs both apg and tpp");
+            }
+
+            PointGuard pg = new PointGuard(apg, tpp);
+
+            player.setPointGuard( pg );
             player.getPointGuard().setPlayer(player);
+
         } else {
-            player.setCenter( new Center(0, 0, 0.0f, 0.0f));
+
+            Integer blocks = dto.getCenter().getBlocks();
+            Integer rebounds = dto.getCenter().getRebounds();
+            Float bpg = dto.getCenter().getBlocksPerGame();
+            Float rpg = dto.getCenter().getReboundsPerGame();
+            Center center = null;
+
+            if (blocks != null && rebounds != null && bpg != null && rpg != null) {
+                center = new Center(blocks, rebounds, bpg, rpg);
+            } else if (blocks != null && bpg != null && rpg != null) {
+                center = new Center(blocks, bpg, rpg);
+            } else if (bpg != null && rpg != null) {
+                center = new Center(bpg, rpg);
+            } else {
+                throw new RuntimeException("Center needs atleast bpg and rpg");
+            }
+            
+            player.setCenter( center );
             player.getCenter().setPlayer(player);
+            
         }
         return playerMapper.toDTO(playerRepository.save(player));
     }

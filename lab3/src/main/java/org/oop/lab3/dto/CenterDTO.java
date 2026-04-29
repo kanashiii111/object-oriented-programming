@@ -2,6 +2,7 @@ package org.oop.lab3.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
@@ -14,9 +15,13 @@ import lombok.Data;
 })
 public class CenterDTO {
     private Long id;
+    @Positive(message="blocks must atleast be 0")
     private Integer blocks;
+    @Positive(message="rebounds must atleast be 0")
     private Integer rebounds;
+    @Positive(message="blocksPerGame must atleast be 0")
     private Float blocksPerGame;
+    @Positive(message="reboundsPerGame must atleast be 0")
     private Float reboundsPerGame;
 
     public Long getId() {

@@ -14,6 +14,17 @@ public class Center implements Playable{
 
     public Center() {}
 
+    public Center(float blocks_per_game, float rebounds_per_game ) {
+        this.blocks_per_game = blocks_per_game;
+        this.rebounds_per_game = rebounds_per_game;
+    }
+
+    public Center(int blocks, float blocks_per_game, float rebounds_per_game ) {
+        this.blocks = blocks;
+        this.blocks_per_game = blocks_per_game;
+        this.rebounds_per_game = rebounds_per_game;
+    }
+
     public Center(int blocks, int rebounds, float blocks_per_game, float rebounds_per_game ) {
         this.blocks = blocks;
         this.rebounds = rebounds;

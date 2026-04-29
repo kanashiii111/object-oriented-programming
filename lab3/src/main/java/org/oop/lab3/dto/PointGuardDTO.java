@@ -2,6 +2,7 @@ package org.oop.lab3.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
@@ -12,7 +13,9 @@ import lombok.Data;
 })
 public class PointGuardDTO {
     private Long id;
+    @Positive(message="assists per game must atleast be 0")
     private Float assistsPerGame;
+    @Positive(message="three point percentage must atleast be 0")
     private Float threePointPercentage;
 
     public Long getId() {

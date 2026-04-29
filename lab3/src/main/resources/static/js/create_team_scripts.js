@@ -50,7 +50,7 @@ async function submitTeam(event) {
                 displayErrors(errorResponse);
             }
         } else {
-            showError("Ошибка: " + response.status);
+            showError("Ошибка: " + response.status + " " + response.message);
         }
     } catch (error) {
         showError('Ошибка сети: ' + error.message);

@@ -1,4 +1,6 @@
-.form-group {
+.form-group, 
+.form-group-center, 
+.form-group-pg {
     margin-bottom: 15px;
 }
 label {
