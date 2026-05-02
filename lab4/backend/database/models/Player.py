@@ -25,6 +25,7 @@ class Player(Base):
     height: Mapped[int]
     jersey_number: Mapped[int]
     type: Mapped[int]
+    games_played: Mapped[int] = mapped_column(nullable=True)
     team_id: Mapped[int] =  mapped_column(ForeignKey("teams.id", ondelete="SET NULL"), nullable=True)
 
     center: Mapped[Optional["Center"]] = relationship(back_populates="player", cascade="all, delete")

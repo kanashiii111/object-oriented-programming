@@ -11,6 +11,7 @@ class PlayerRead(BaseModel):
     jersey_number: int
     type: int
     team_id: Optional[int] = None
+    games_played: Optional[int] = None
     center: Optional[CenterRead] = None
     point_guard: Optional[PointGuardRead] = None
     ###
@@ -22,6 +23,7 @@ class PlayerCreate(BaseModel):
     jersey_number: int
     type: int
     team_id: Optional[int] = None
+    games_played: Optional[int] = None
     center: Optional[CenterCreate] = None
     point_guard: Optional[PointGuardCreate] = None
     ###
@@ -34,6 +36,7 @@ class PlayerUpdate(BaseModel):
     jersey_number: Optional[int] = None
     type: Optional[int] = None
     team_id: Optional[int] = None
+    games_played: Optional[int] = None
     center: Optional[CenterUpdate] = None
     point_guard: Optional[PointGuardUpdate] = None
     ###

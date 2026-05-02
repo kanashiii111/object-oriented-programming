@@ -1,19 +1,67 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>OOP lab4</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="static/css/homepage_styles.css">
-    </head>
-    <body>
-        <h1>Homepage</h1>
-        <script src="static/js/homepage_scripts.js" async defer></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>Basketball Players</title>
+    <link rel="stylesheet" href="/static/css/homepage_styles.css">
+</head>
+<body>
+    <h1>Список игроков</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Рост</th>
+                <th>Номер</th>
+                <th>Тип</th>
+                <th>Показатели</th>
+                <th>Средние показатели</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Height}} см</td>
+                <td>#{{.JerseyNumber}}</td>
+                <td>{{if eq .Type 1}}Центровой{{else}}Разыгрывающий{{end}}</td>
+                <td>
+                    Игр сыграно: {{.GamesPlayed}} <br>
+                    {{if .Center}}
+                        Блоки: {{.Center.Blocks}} <br> 
+                        Подборы: {{.Center.Rebounds}} <br>
+                    {{else}}
+                        Ассисты: {{.PointGuard.Assists}} <br> 
+                        Трёхочковые попадания: {{.PointGuard.ThreePointMakes}} <br>
+                    {{end}}
+                </td>
+                <td>
+                    {{if .Center}}
+                        Блоки за игру: {{printf "%.2f" .Center.BlocksPerGame}} <br>
+                        Подборы за игру: {{printf "%.2f" .Center.ReboundsPerGame}}
+                    {{else}}
+                        Ассисты за игру: {{printf "%.2f" .PointGuard.AssistsPerGame}} <br>
+                        Процент трёхочковых попаданий: {{printf "%.2f" .PointGuard.ThreePointsPerGame}}
+                    {{end}}
+                </td>
+                <td>
+                    <button>Редактировать</button>
+                    <button>Удалить</button>
+                    <button>Методы</button>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="6">Игроки не найдены</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+    <script src="/static/js/homepage_scripts.js" async defer></script>
+</body>
 </html>

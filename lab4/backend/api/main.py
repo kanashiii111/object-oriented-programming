@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import uvicorn
 from database.session import init_db
-from api.routes import players
+from api.routes import players, teams
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -14,6 +14,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="oop.lab4 api", lifespan=lifespan)
 
 app.include_router(players.router)
+app.include_router(teams.router)
 
 @app.get("/")
 def root():

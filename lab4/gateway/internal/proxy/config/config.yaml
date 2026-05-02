@@ -12,10 +12,29 @@ resources:
     method: "POST"
     destination_url: "http://backend:5000"
   - name: update_player
-    endpoint: "/api/players/{id}"
+    endpoint: "/api/players"
     method: "PUT"
     destination_url: "http://backend:5000"
   - name: delete_player
     endpoint: "/api/players/{id}"
+    method: "DELETE"
+    destination_url: "http://backend:5000"
+
+  ## Teams endpoints
+
+  - name: get_teams
+    endpoint: "/api/teams"
+    method: "GET"
+    destination_url: "http://backend:5000"
+  - name: create_team
+    endpoint: "/api/teams"
+    method: "POST"
+    destination_url: "http://backend:5000"
+  - name: update_team
+    endpoint: "/api/teams"
+    method: "PUT"
+    destination_url: "http://backend:5000"
+  - name: delete_team
+    endpoint: "/api/teams/{id}"
     method: "DELETE"
     destination_url: "http://backend:5000"

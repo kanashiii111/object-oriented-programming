@@ -40,16 +40,3 @@ migrate-action:
 		-path /migrations \
 		-database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable \
 		$(action)
-
-## --- APP ---
-
-VENV_BIN = ./.venv/Scripts
-PYTHON = $(VENV_BIN)/python.exe
-GATEWAY_MAIN = C:/Main/Coding/object-oriented-programming/lab4/gateway/cmd/main.go
-
-run-backend:
-	$(VENV_BIN)/uvicorn backend.api.main:app --reload --port 5000
-
-run-gateway:
-	cd C:/Main/Coding/object-oriented-programming/lab4/gateway && \
-	go run $(GATEWAY_MAIN)

@@ -27,7 +27,7 @@ async def delete_player(player_id: int, db: AsyncSession = Depends(get_db)):
     if not success:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Player not found"})
     
-@router.put("/{player_id}", response_model=PlayerRead, status_code=status.HTTP_200_OK)
+@router.put("", response_model=PlayerRead, status_code=status.HTTP_200_OK)
 async def update_player(player_data: PlayerUpdate, db: AsyncSession = Depends(get_db)):
     updated_player = await crud_player.update_player(db, player_data)
     if not updated_player:

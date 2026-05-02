@@ -12,7 +12,7 @@ class Team(Base):
     __tablename__ = "teams"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30), unique=True)
-    city: Mapped[str]
+    city: Mapped[str]  = mapped_column(String(30), nullable=True)
 
     def __repr__(self) -> str:
         return f"Team(id={self.id!r}, name={self.name!r}, city={self.city!r})"
