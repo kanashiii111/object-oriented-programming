@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from backend.database.session import init_db
-from backend.api.routes import players
+import uvicorn
+from database.session import init_db
+from api.routes import players
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,4 +19,5 @@ app.include_router(players.router)
 def root():
     return {"message": "Welcome to oop lab4 API"}
 
-
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=5000, reload=True)

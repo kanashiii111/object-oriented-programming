@@ -1,17 +1,35 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.database.session import get_db
-from backend.database.crud import player as crud_player
-from backend.api.schemas.player import PlayerRead, PlayerCreate
+from database.session import get_db
+from database.crud import player as crud_player
+from api.schemas.player import PlayerRead, PlayerCreate, PlayerUpdate
 
-router = APIRouter(prefix="/api/players", tags=["Players"])
+router = APIRouter(prefix="/players", tags=["Players"])
 
-@router.get("/", response_model=list[PlayerRead])
+@router.get("", response_model=list[PlayerRead])
 async def read_players(db: AsyncSession = Depends(get_db)):
     players = await crud_player.get_all_players(db)
     return players
 
-@router.post("/", status_code=201)
+@router.post("", response_model=PlayerRead, status_code=status.HTTP_201_CREATED)
 async def add_player(db: AsyncSession = Depends(get_db), player_data: PlayerCreate = None):
+    if player_data is None:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Invalid player data"})
     added_player = await crud_player.create_player(db, player_data)
     return added_player
+
+@router.delete("/{player_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_player(player_id: int, db: AsyncSession = Depends(get_db)):
+    if player_id <= 0 or player_id is None:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": "Invalid player ID"})
+    success = await crud_player.delete_player_by_id(db, player_id)
+    if not success:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Player not found"})
+    
+@router.put("/{player_id}", response_model=PlayerRead, status_code=status.HTTP_200_OK)
+async def update_player(player_data: PlayerUpdate, db: AsyncSession = Depends(get_db)):
+    updated_player = await crud_player.update_player(db, player_data)
+    if not updated_player:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Player not found"})
+    return updated_player

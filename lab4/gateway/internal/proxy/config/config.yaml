@@ -1,0 +1,21 @@
+server:
+  host: "0.0.0.0"
+  port: "8080"
+
+resources:
+  - name: get_players
+    endpoint: "/api/players"
+    method: "GET"
+    destination_url: "http://backend:5000"
+  - name: create_player
+    endpoint: "/api/players"
+    method: "POST"
+    destination_url: "http://backend:5000"
+  - name: update_player
+    endpoint: "/api/players/{id}"
+    method: "PUT"
+    destination_url: "http://backend:5000"
+  - name: delete_player
+    endpoint: "/api/players/{id}"
+    method: "DELETE"
+    destination_url: "http://backend:5000"

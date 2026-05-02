@@ -4,3 +4,7 @@ lab3/target
 .vs/
 *__pycache__
 .venv/
+*.log
+*.env
+postgres-data/
+migrations/
