@@ -46,6 +46,15 @@ func (c *Cache) cleanup() {
 	}
 }
 
+func (c *Cache) ForceCleanup() {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+	for key := range c.expiration {
+		delete(c.data, key)
+		delete(c.expiration, key)
+	}
+}
+
 func (c *Cache) Set(key string, value interface{}, ttl time.Duration) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()

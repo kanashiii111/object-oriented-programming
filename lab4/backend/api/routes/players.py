@@ -12,6 +12,13 @@ async def read_players(db: AsyncSession = Depends(get_db)):
     players = await crud_player.get_all_players(db)
     return players
 
+@router.get("/{player_id}", response_model=PlayerRead)
+async def read_player(player_id: int, db: AsyncSession = Depends(get_db)):
+    player = await crud_player.get_player_by_id(db, player_id)
+    if not player:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Player not found"})
+    return player
+
 @router.post("", response_model=PlayerRead, status_code=status.HTTP_201_CREATED)
 async def add_player(db: AsyncSession = Depends(get_db), player_data: PlayerCreate = None):
     if player_data is None:

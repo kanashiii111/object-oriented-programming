@@ -1,18 +1,26 @@
 package services
 
 import (
-	"fmt"
 	"gateway/internal/models"
 )
 
-func ValidateCenter(center *models.Center) error {
+func ValidateCenter(center *models.Center) map[string]any {
+	var errorMap map[string]any = nil
+
+	addError := func(key string, value any) {
+		if errorMap == nil {
+			errorMap = make(map[string]any)
+		}
+		errorMap[key] = value
+	}
+
 	if center.Blocks < 0 {
-		return fmt.Errorf("blocks cannot be negative")
+		addError("blocks", "Количество блоков не может быть отрицательным")
 	}
 	if center.Rebounds < 0 {
-		return fmt.Errorf("rebounds cannot be negative")
+		addError("rebounds", "Количество подборов не может быть отрицательным")
 	}
-	return nil
+	return errorMap
 }
 
 func CalculateCenterStats(center *models.Center, gamesPlayed int) {

@@ -7,6 +7,10 @@ resources:
     endpoint: "/api/players"
     method: "GET"
     destination_url: "http://backend:5000"
+  - name: get_player
+    endpoint: "/api/players/{id}"
+    method: "GET"
+    destination_url: "http://backend:5000"
   - name: create_player
     endpoint: "/api/players"
     method: "POST"

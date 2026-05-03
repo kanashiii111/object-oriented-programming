@@ -6,6 +6,37 @@
     <link rel="stylesheet" href="/static/css/homepage_styles.css">
 </head>
 <body>
+    <h1>Список команд</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Город</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Teams}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.City}}</td>
+                <td>
+                    <button onclick="location.href='/edit/team/{{.ID}}'">Редактировать</button>
+                    <button onclick="deleteSelectedTeam({{.ID}})">Удалить</button>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="4">Команды не найдены</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    <button onclick="location.href='/create/team'">Добавить команду</button>
+
     <h1>Список игроков</h1>
 
     <table border="1">
@@ -15,6 +46,7 @@
                 <th>Имя</th>
                 <th>Рост</th>
                 <th>Номер</th>
+                <th>Команда</th>
                 <th>Тип</th>
                 <th>Показатели</th>
                 <th>Средние показатели</th>
@@ -22,12 +54,13 @@
             </tr>
         </thead>
         <tbody>
-            {{range .}}
+            {{range .Players}}
             <tr>
                 <td>{{.ID}}</td>
                 <td>{{.Name}}</td>
                 <td>{{.Height}} см</td>
                 <td>#{{.JerseyNumber}}</td>
+                <td>{{.TeamID}}</td>
                 <td>{{if eq .Type 1}}Центровой{{else}}Разыгрывающий{{end}}</td>
                 <td>
                     Игр сыграно: {{.GamesPlayed}} <br>
@@ -49,8 +82,8 @@
                     {{end}}
                 </td>
                 <td>
-                    <button>Редактировать</button>
-                    <button>Удалить</button>
+                    <button onclick="location.href='/edit/player/{{.ID}}'">Редактировать</button>
+                    <button onclick="deleteSelectedPlayer({{.ID}})">Удалить</button>
                     <button>Методы</button>
                 </td>
             </tr>
@@ -61,7 +94,7 @@
             {{end}}
         </tbody>
     </table>
-
+    <button onclick="location.href='/create/player'">Добавить игрока</button>
     <script src="/static/js/homepage_scripts.js" async defer></script>
 </body>
 </html>

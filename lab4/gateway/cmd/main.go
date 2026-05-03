@@ -11,3 +11,5 @@ func main() {
 		panic(err)
 	}
 }
+
+// team editing, player methods, filters, use of different constructors

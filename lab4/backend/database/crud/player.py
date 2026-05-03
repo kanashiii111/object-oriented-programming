@@ -24,6 +24,13 @@ async def get_all_players(db: AsyncSession):
                             ))
     return result.scalars().all()
 
+async def get_player_by_id(db: AsyncSession, player_id: int):
+    result = await db.execute(select(Player).where(Player.id == player_id).options(
+        selectinload(Player.center),
+        selectinload(Player.point_guard)
+    ))
+    return result.scalar_one_or_none()
+
 async def create_player(db: AsyncSession, player_schema: PlayerCreate):
     player_data = player_schema.model_dump()
     role_data = player_data.pop("center", None) or player_data.pop("point_guard", None)
@@ -95,13 +102,13 @@ async def update_player(db: AsyncSession, player_schema: PlayerUpdate):
     
     try:
         new_player = Player(**player_schema.model_dump())
-        player = await db.merge(new_player)
         if new_player.type == Type.center and player.point_guard:
             await delete_point_guard(db, player_id=player.id)
             player.point_guard = None
         elif new_player.type == Type.point_guard and player.center:
             await delete_center(db, player_id=player.id)
             player.center = None
+        player = await db.merge(new_player)
     except Exception as e:
         logger.debug(f"Error updating player attributes: {e}")
         return None

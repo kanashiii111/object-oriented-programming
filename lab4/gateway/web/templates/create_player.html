@@ -14,6 +14,90 @@
     </head>
     <body>
         <h1>Create Player</h1>
+
+        <div id="errorContainer" class="error-message" style="display: none;"></div><br>
+
+        <form id="playerForm">
+            
+            <div class="form-group">
+                <label>Имя:</label>
+                <input type="text" name="name" id="name" required/>
+                <span class="field-error" id="nameError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Рост (см):</label>
+                <input type="number" name="height" id="height" required/>
+                <span class="field-error" id="heightError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Игровой номер:</label>
+                <input type="number" name="jersey_number" id="jersey_number" required/>
+                <span class="field-error" id="jersey_numberError"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Игр сыграно:</label>
+                <input type="number" name="games_played" id="games_played" required/>
+                <span class="field-error" id="games_playedError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Амплуа:</label>
+                <select id="type" name="type" required>
+                    <option value=-1>Выберите...</option>
+                    <option value=1>Центровой</option>
+                    <option value=0>Разыгрывающий</option>
+                </select>
+                <span class="field-error" id="typeError"></span>
+            </div>
+
+            <!-- Center -->
+
+            <div class="form-group-center" style="display: none;">
+                <label>Блоки:</label>
+                <input type="number" name="blocks" id="blocks"/>
+                <span class="field-error" id="blocksError"></span>
+            </div>
+
+            <div class="form-group-center" style="display: none;">
+                <label>Подборы:</label>
+                <input type="number" name="rebounds" id="rebounds"/>
+                <span class="field-error" id="reboundsError"></span>
+            </div>
+
+            <!-- PointGuard -->
+
+            <div class="form-group-pg" style="display: none;">
+                <label>Ассисты:</label>
+                <input type="number" name="assists" id="assists"/>
+                <span class="field-error" id="assistsError"></span>
+            </div>
+
+            <div class="form-group-pg" style="display: none;">
+                <label>Кол-во трёхочковых попаданий:</label>
+                <input type="number" name="three_point_makes" id="three_point_makes"/>
+                <span class="field-error" id="three_point_makesError"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Команда:</label>
+                <select id="team_id" name="team_id">
+                    <option value="">Выберите...</option>
+                    {{range .}}
+                        <option value={{.ID}}>{{.Name}} ({{.City}})</option>
+                    {{end}}
+                    </option>
+                </select>
+                <span class="field-error" id="team_idError"></span>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Создать игрока</button>
+                <a href="/home">Отмена</a>
+            </div>
+        </form>
         <script src="/static/js/create_player_scripts.js" async defer></script>
     </body>
 </html>

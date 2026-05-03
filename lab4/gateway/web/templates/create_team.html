@@ -13,7 +13,30 @@
         <link rel="stylesheet" href="/static/css/create_team_styles.css">
     </head>
     <body>
-        <h1>Create Team</h1>
+        <h1>Создание новой команды</h1>
+
+        <div id="errorContainer" class="error-message" style="display: none;"></div><br>
+        
+        <form id="teamForm">
+            
+            <div class="form-group">
+                <label>Имя:</label>
+                <input type="text" name="name" id="name" required/>
+                <span class="field-error" id="nameError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Город:</label>
+                <input type="text" name="city" id="city" required/>
+                <span class="field-error" id="cityError"></span>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Создать команду</button>
+                <a href="/home">Отмена</a>
+            </div>
+
+        </form>
         <script src="/static/js/create_team_scripts.js" async defer></script>
     </body>
 </html>

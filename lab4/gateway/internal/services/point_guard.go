@@ -1,18 +1,26 @@
 package services
 
 import (
-	"fmt"
 	"gateway/internal/models"
 )
 
-func ValidatePointGuard(pointGuard *models.PointGuard) error {
+func ValidatePointGuard(pointGuard *models.PointGuard) map[string]any {
+	var errorMap map[string]any = nil
+
+	addError := func(key string, value any) {
+		if errorMap == nil {
+			errorMap = make(map[string]any)
+		}
+		errorMap[key] = value
+	}
+
 	if pointGuard.Assists < 0 {
-		return fmt.Errorf("assists cannot be negative")
+		addError("assists", "Количество ассистов не может быть отрицательным")
 	}
 	if pointGuard.ThreePointMakes < 0 {
-		return fmt.Errorf("three-point makes cannot be negative")
+		addError("three_point_makes", "Количество трехочковых попаданий не может быть отрицательным")
 	}
-	return nil
+	return errorMap
 }
 
 func CalculatePointGuardStats(pointGuard *models.PointGuard, gamesPlayed int) {

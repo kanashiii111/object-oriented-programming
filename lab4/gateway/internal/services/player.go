@@ -3,33 +3,52 @@ package services
 import (
 	"fmt"
 	"gateway/internal/models"
+	"strings"
+
+	vgo "github.com/bube054/validatorgo"
 )
 
-func ValidatePlayer(player *models.Player) error {
-	if player.Name == "" {
-		return fmt.Errorf("player name cannot be empty")
+func ValidatePlayer(player *models.Player) map[string]any {
+	var errorMap map[string]any = nil
+
+	addError := func(key string, value any) {
+		if errorMap == nil {
+			errorMap = make(map[string]any)
+		}
+		errorMap[key] = value
+	}
+
+	if vgo.IsEmpty(player.Name, &vgo.IsEmptyOpts{IgnoreWhitespace: true}) || strings.TrimSpace(player.Name) == "" {
+		addError("name", "Имя не должно быть пустым")
 	}
 	if player.Height < 150 || player.Height > 240 {
-		return fmt.Errorf("player height must be between 150 and 240 cm")
+		addError("height", "Рост должен быть между 150 и 240 см")
 	}
 	if player.JerseyNumber < 0 || player.JerseyNumber > 99 {
-		return fmt.Errorf("jersey number must be between 0 and 99")
+		addError("jersey_number", "Номер на футболке должен быть между 0 и 99")
 	}
 	if player.Type != 1 && player.Type != 0 {
-		return fmt.Errorf("player type must be 0 (point guard), 1 (center)")
+		addError("type", "Тип игрока должен быть 0 (point guard), 1 (center)")
+	}
+	if player.GamesPlayed < 0 {
+		addError("games_played", "Количество игр не может быть отрицательным")
 	}
 	if player.Type == int(models.CenterType) {
+		fmt.Println("Validating center stats...")
 		errs := ValidateCenter(player.Center)
 		if errs != nil {
-			return errs
+			addError("blocks", errs["blocks"])
+			addError("rebounds", errs["rebounds"])
 		}
 	} else if player.Type == int(models.PointGuardType) {
+		fmt.Println("Validating point guard stats...")
 		errs := ValidatePointGuard(player.PointGuard)
 		if errs != nil {
-			return errs
+			addError("assists", errs["assists"])
+			addError("three_point_makes", errs["three_point_makes"])
 		}
 	}
-	return nil
+	return errorMap
 }
 
 func CalculatePlayerStats(player *models.Player) {

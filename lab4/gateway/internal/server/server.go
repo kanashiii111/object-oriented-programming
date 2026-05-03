@@ -18,6 +18,10 @@ func Run() error {
 	}
 
 	router := mux.NewRouter()
+	staticFileDirectory := http.Dir("./web/static/")
+	staticFileHandler := http.StripPrefix("/static/", http.FileServer(staticFileDirectory))
+	router.PathPrefix("/static/").Handler(staticFileHandler)
+
 	router.HandleFunc("/", handlers.HandleHomepage).Methods("GET")
 	router.HandleFunc("/home", handlers.HandleHomepage).Methods("GET")
 	router.HandleFunc("/create/player", handlers.HandleCreatePlayerPage).Methods("GET")
@@ -25,10 +29,6 @@ func Run() error {
 	router.HandleFunc("/edit/player/{id}", handlers.HandleEditPlayerPage).Methods("GET")
 	router.HandleFunc("/edit/team/{id}", handlers.HandleEditTeamPage).Methods("GET")
 	router.HandleFunc("/methods/player/{id}", handlers.HandlePlayerMethodsPage).Methods("GET")
-
-	staticFileDirectory := http.Dir("./web/static/")
-	staticFileHandler := http.StripPrefix("/static/", http.FileServer(staticFileDirectory))
-	router.PathPrefix("/static/").Handler(staticFileHandler)
 
 	for _, resource := range cfg.Resources {
 		url, _ := url.Parse(resource.Destination_URL)
