@@ -12,4 +12,4 @@ func main() {
 	}
 }
 
-// team editing, player methods, filters, use of different constructors
+// filters, use of different constructors

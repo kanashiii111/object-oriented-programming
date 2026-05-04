@@ -23,11 +23,19 @@ resources:
     endpoint: "/api/players/{id}"
     method: "DELETE"
     destination_url: "http://backend:5000"
+  - name: get_player_method
+    endpoint: "/api/players/{id}/methods/{method_name}"
+    method: "GET"
+    destination_url: "http://backend:5000" 
 
   ## Teams endpoints
 
   - name: get_teams
     endpoint: "/api/teams"
+    method: "GET"
+    destination_url: "http://backend:5000"
+  - name: get_team
+    endpoint: "/api/teams/{id}"
     method: "GET"
     destination_url: "http://backend:5000"
   - name: create_team

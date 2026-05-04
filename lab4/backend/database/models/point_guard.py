@@ -21,7 +21,31 @@ class PointGuard(Base):
     three_points_per_game: Mapped[float] = mapped_column(nullable=True)
 
     player: Mapped["Player"] = relationship(back_populates="point_guard")
+    
+    def play(self):
+        return str.format("{name} is orchestrating the offense, making plays and hitting three-pointers.", name=self.getPlayer().getName())
+    
+    def train(self):
+        return str.format("{name} is training on ball handling, passing and shooting three-pointers.", name=self.getPlayer().getName())
+    
+    def printInfo(self):
+        return self.getPlayer().getBasicInfo() + f"\nAssists: {self.assists}\nThreePointMakes: {self.three_point_makes}\nAPG: {self.assists_per_game}\nTPP: {self.three_points_per_game}"
+    def assist(self):
+        self.assists += 1
+        return str.format("Assists: {assists}", assists=self.assists)
+    
+    def makeThreePointShot(self):
+        self.three_point_makes += 1
+        return str.format("Three point makes: {three_point_makes}", three_point_makes=self.three_point_makes)
+    
+    def makePass(self):
+        return str.format("{name} is passing the ball to a teammate.", name=self.getPlayer().getName())
+    
+    def dribble(self):
+        return str.format("{name} is dribbling the ball.", name=self.getPlayer().getName())
 
     def __repr__(self) -> str:
         return f"PointGuard(id={self.id!r}, assists_per_game={self.assists_per_game!r}, three_points_per_game={self.three_points_per_game!r})"
     
+    def getPlayer(self):
+        return self.player

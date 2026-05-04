@@ -72,10 +72,17 @@ func NewProxy(target *url.URL) *httputil.ReverseProxy {
 
 func ProxyHandler(proxy *httputil.ReverseProxy, url *url.URL, endpoint string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("[ PROXY SERVER ] Request received at %s\n", r.URL)
+		fmt.Printf("[ PROXY SERVER ] Request received at %s %s\n", r.Method, r.URL)
 		r.URL.Host = url.Host
 		r.URL.Scheme = url.Scheme
 		r.Host = url.Host
+
+		if r.Method == http.MethodGet {
+			if strings.Contains(r.URL.Path, "/methods") {
+				handlers.PlayerCache.ForceCleanup()
+				fmt.Println("[ CACHE ] Invalidating PlayerCache due to METHOD mutation")
+			}
+		}
 
 		if r.Method == http.MethodPost || r.Method == http.MethodPut {
 			if r.URL.Path == "/api/teams" {
@@ -97,8 +104,8 @@ func ProxyHandler(proxy *httputil.ReverseProxy, url *url.URL, endpoint string) f
 		if r.Method == http.MethodDelete {
 			if strings.Contains(r.URL.Path, "/api/teams") {
 				handlers.TeamCache.ForceCleanup()
-				// handlers.PlayerCache.ForceCleanup()
-				fmt.Println("[ CACHE ] Invalidating TeamCache due to DELETE mutation")
+				handlers.PlayerCache.ForceCleanup()
+				fmt.Println("[ CACHE ] Invalidating PlayerCache and TeamCache due to DELETE mutation")
 			} else {
 				handlers.PlayerCache.ForceCleanup()
 				fmt.Println("[ CACHE ] Invalidating PlayerCache due to DELETE mutation")

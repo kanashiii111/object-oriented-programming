@@ -8,6 +8,10 @@ async def get_all_teams(db: AsyncSession):
     result = await db.execute(select(Team))
     return result.scalars().all()
 
+async def get_team_by_id(db:AsyncSession, team_id):
+    result = await db.execute(select(Team).where(Team.id == team_id))
+    return result.scalar_one_or_none()
+
 async def create_team(db: AsyncSession, team_schema: TeamCreate):
     team_data = team_schema.model_dump()
     new_team = Team(**team_data)

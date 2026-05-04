@@ -13,7 +13,31 @@
         <link rel="stylesheet" href="/static/css/player_methods_styles.css">
     </head>
     <body>
-        <h1>Player Methods</h1>
+        <h1>Панель управления: <span text="{{.Name}}">Игрок</span></h1>
+
+        <div class="controls">
+            <button onclick="executeMethod({{.ID}}, 'play')">PLAY</button>
+            <button onclick="executeMethod({{.ID}}, 'train')">TRAIN</button>
+            <button onclick="executeMethod({{.ID}}, 'printInfo')">PRINT INFO</button>
+            <div class="center-controls" style="display: {{if eq .Type 1}}block{{else}}none{{end}}">
+                <button onclick="executeMethod({{.ID}}, 'block')">BLOCK</button>
+                <button onclick="executeMethod({{.ID}}, 'rebound')">REBOUND</button>
+                <button onclick="executeMethod({{.ID}}, 'setScreen')">SETSCREEN</button>
+                <button onclick="executeMethod({{.ID}}, 'post')">POST</button>
+            </div>
+            <div class="center-controls" style="display: {{if eq .Type 0}}block{{else}}none{{end}}">
+                <button onclick="executeMethod({{.ID}}, 'assist')">ASSISTS</button>
+                <button onclick="executeMethod({{.ID}}, 'makeThreePointShot')">MAKE THREEPOINT SHOT</button>
+                <button onclick="executeMethod({{.ID}}, 'dribble')">DRIBBLE</button>
+                <button onclick="executeMethod({{.ID}}, 'makePass')">PASS</button>
+            </div>
+            <button class="clear-btn" onclick="clearTerminal()">Очистить</button>
+            <a href="/home" style="margin-left: 20px; color: #444;">Назад</a>
+        </div>
+
+        <div id="terminal">
+            <div class="response-line">Система готова. Ожидание команды...</div>
+        </div>
         <script src="/static/js/player_methods_scripts.js" async defer></script>
     </body>
 </html>

@@ -173,13 +173,33 @@ func HandleEditPlayerPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleEditTeamPage(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	team_id := vars["id"]
+	responce, err := http.Get("http://localhost:8080/api/teams/" + team_id)
+	if err != nil {
+		http.Error(w, "Error fetching player", http.StatusInternalServerError)
+		return
+	}
+	defer responce.Body.Close()
+
+	var team models.Team
+	json.NewDecoder(responce.Body).Decode(&team)
 	tmpl := template.Must(template.ParseFiles("web/templates/edit_team.html"))
-	tmpl.Execute(w, nil)
-	fmt.Println("Edit team page served")
+	tmpl.Execute(w, team)
 }
 
 func HandlePlayerMethodsPage(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	player_id := vars["id"]
+	responce, err := http.Get("http://localhost:8080/api/players/" + player_id)
+	if err != nil {
+		http.Error(w, "Error fetching player", http.StatusInternalServerError)
+		return
+	}
+	defer responce.Body.Close()
+
+	var player models.Player
+	json.NewDecoder(responce.Body).Decode(&player)
 	tmpl := template.Must(template.ParseFiles("web/templates/player_methods.html"))
-	tmpl.Execute(w, nil)
-	fmt.Println("Player methods page served")
+	tmpl.Execute(w, player)
 }

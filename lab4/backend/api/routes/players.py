@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.session import get_db
 from database.crud import player as crud_player
@@ -18,6 +18,47 @@ async def read_player(player_id: int, db: AsyncSession = Depends(get_db)):
     if not player:
         return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Player not found"})
     return player
+
+@router.get("/{player_id}/methods/{method_name}")
+async def get_player_method(player_id: int, method_name:str, db: AsyncSession = Depends(get_db)):
+    player = await crud_player.get_player_by_id(db, player_id)
+    if not player:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Player not found"})
+    
+    result = None
+    sub_obj = None
+    
+    if method_name in ["block", "rebound"]:
+        sub_obj = player.getCenter()
+        if sub_obj:
+            result = getattr(sub_obj, method_name)()
+            
+    elif method_name in ["assist", "makeThreePointShot"]:
+        sub_obj = player.getPointGuard()
+        if sub_obj:
+            result = getattr(sub_obj, method_name)()
+    
+    if method_name == "play":
+        return PlainTextResponse(player.play())
+    elif method_name == "train":
+        return PlainTextResponse(player.train())
+    elif method_name == "printInfo":
+        return PlainTextResponse(player.printInfo())
+    elif method_name == "setScreen":
+        return PlainTextResponse(player.getCenter().setScreen())
+    elif method_name == "post":
+        return PlainTextResponse(player.getCenter().post())
+    elif method_name == "dribble":
+        return PlainTextResponse(player.getPointGuard().dribble())
+    elif method_name == "makePass":
+        return PlainTextResponse(player.getPointGuard().makePass())
+    
+    if sub_obj:
+        db.add(sub_obj)
+        await db.commit()
+        await db.refresh(sub_obj)
+
+    return result if result else "Method not found or sub-player missing"
 
 @router.post("", response_model=PlayerRead, status_code=status.HTTP_201_CREATED)
 async def add_player(db: AsyncSession = Depends(get_db), player_data: PlayerCreate = None):

@@ -30,6 +30,18 @@ class Player(Base):
 
     center: Mapped[Optional["Center"]] = relationship(back_populates="player", cascade="all, delete")
     point_guard: Mapped[Optional["PointGuard"]] = relationship(back_populates="player", cascade="all, delete")
+    
+    def play(self):
+        return self.getPointGuard().play() if self.type == Type.point_guard else self.getCenter().play()
+    
+    def train(self):
+        return self.getPointGuard().train() if self.type == Type.point_guard else self.getCenter().train()
+    
+    def getBasicInfo(self):
+        return f"Name: {self.name}\nHeight:: {self.height}\nJersey number: {self.jersey_number}\nGames player: {self.games_played}"
+    
+    def printInfo(self):
+        return self.getPointGuard().printInfo() if self.type == Type.point_guard else self.getCenter().printInfo()
 
     def __repr__(self) -> str:
         return f"""Player(id={self.id!r},
@@ -41,4 +53,13 @@ class Player(Base):
             center={self.center!r},
             point_guard={self.point_guard!r})
         """
+        
+    def getName(self):
+        return self.name
+    
+    def getCenter(self):
+        return self.center
+    
+    def getPointGuard(self):
+        return self.point_guard
     

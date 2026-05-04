@@ -13,7 +13,33 @@
         <link rel="stylesheet" href="/static/css/edit_team_styles.css">
     </head>
     <body>
-        <h1>Edit Team</h1>
+        <h1>Редактирование команды</h1>
+
+        <div id="errorContainer" class="error-message" style="display: none;"></div><br>
+        
+        <form id="teamForm">
+
+            <input type="hidden" id="teamId" value="{{.ID}}">
+            
+            <div class="form-group">
+                <label>Название:</label>
+                <input type="text" name="name" id="name" value="{{.Name}}" required/>
+                <span class="field-error" id="nameError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Город:</label>
+                <input type="text" name="city" id="city" value="{{.City}}" required/>
+                <span class="field-error" id="heightError"></span>
+            </div>
+            
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Сохранить команду</button>
+                <a href="/home">Отмена</a>
+            </div>
+        </form>
         <script src="/static/js/edit_team_scripts.js" async defer></script>
     </body>
 </html>

@@ -12,6 +12,13 @@ async def read_teams(db: AsyncSession = Depends(get_db)):
     teams = await crud_team.get_all_teams(db)
     return teams
 
+@router.get("/{team_id}", response_model=TeamRead)
+async def read_team(team_id: int, db: AsyncSession = Depends(get_db)):
+    team = await crud_team.get_team_by_id(db, team_id)
+    if not team:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Team not found"})
+    return team
+
 @router.post("", response_model=TeamRead, status_code=status.HTTP_201_CREATED)
 async def add_team(db: AsyncSession = Depends(get_db), team_data: TeamCreate = None):
     if team_data is None:
