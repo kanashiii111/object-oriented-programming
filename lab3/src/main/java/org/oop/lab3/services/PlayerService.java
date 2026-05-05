@@ -105,9 +105,8 @@ public class PlayerService {
         
         String type = dto.getType();
         Player.Type trueType = (type.equals("center")) ? Player.Type.center : Player.Type.point_guard;
-        player.setType(trueType);
 
-        if (player.getType() == Player.Type.center && dto.getCenter() != null) {
+        if (trueType == Player.Type.center) {
             Center center = player.getCenter();
             if (center == null) center = new Center();
             
@@ -117,8 +116,8 @@ public class PlayerService {
             center.setReboundsPerGame(dto.getCenter().getReboundsPerGame());
             center.setPlayer(player);
             player.setCenter(center);
-        } 
-        else if (player.getType() == Player.Type.point_guard && dto.getPointGuard() != null) {
+            player.setPointGuard(null);
+        } else if (trueType == Player.Type.point_guard) {
             PointGuard pg = player.getPointGuard();
             if (pg == null) pg = new PointGuard();
             
@@ -126,7 +125,10 @@ public class PlayerService {
             pg.setThreePointPercentage(dto.getPointGuard().getThreePointPercentage());
             pg.setPlayer(player);
             player.setPointGuard(pg);
+            player.setCenter(null);
         }
+
+        player.setType(trueType);
 
         if (dto.getTeamId() != null) {
             Team team = teamRepository.findById(dto.getTeamId()).orElse(null);

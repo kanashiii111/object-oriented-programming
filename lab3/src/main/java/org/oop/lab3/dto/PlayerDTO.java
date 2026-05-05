@@ -2,6 +2,7 @@ package org.oop.lab3.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -22,20 +23,22 @@ import lombok.Data;
 })
 public class PlayerDTO {
     private Long id;
-    @NotNull(message="Name must not be null")
-    @NotBlank(message="Name must not be blank")
-    @NotEmpty(message="Name must not be empty")
+    @NotNull(message="Имя не должно быть пустым")
+    @NotBlank(message="Имя не должно быть пустым")
+    @NotEmpty(message="Имя не должно быть пустым")
     private String name;
-    @Min(value = 150, message="Height must atleast be 150")
-    @Max(value = 230, message="Height must be lower than or equal to 230")
+    @Min(value = 150, message="Рост должен быть хотя бы 150")
+    @Max(value = 230, message="Рост не должен быть больше 230")
     private int height;
-    @Min(value = 0, message="Jersey number must atleast be 0")
-    @Max(value = 99, message="Jersey number must be lower or equal to 99")
+    @Min(value = 0, message="Номер должен быть хотя бы 0")
+    @Max(value = 99, message="Номер не должен быть больше 99")
     private int jerseyNumber;
     private String type;
     private Long teamId;
 
+    @Valid
     private CenterDTO center;
+    @Valid
     private PointGuardDTO pointGuard;
 
     public Long getId() { return id; }

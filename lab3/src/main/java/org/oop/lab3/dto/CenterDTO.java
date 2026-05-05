@@ -15,13 +15,13 @@ import lombok.Data;
 })
 public class CenterDTO {
     private Long id;
-    @Positive(message="blocks must atleast be 0")
+    @Positive(message="Блоки должны быть хотя бы 0")
     private Integer blocks;
-    @Positive(message="rebounds must atleast be 0")
+    @Positive(message="Подборы должны быть хотя бы 0")
     private Integer rebounds;
-    @Positive(message="blocksPerGame must atleast be 0")
+    @Positive(message="Блоки за игру должны быть хотя бы 0")
     private Float blocksPerGame;
-    @Positive(message="reboundsPerGame must atleast be 0")
+    @Positive(message="Подборы за игру должны быть хотя бы 0")
     private Float reboundsPerGame;
 
     public Long getId() {

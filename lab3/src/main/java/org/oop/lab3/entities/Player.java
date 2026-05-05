@@ -44,10 +44,10 @@ public class Player implements Playable {
     @Column(name="id")
     private Long id;
 
-    @OneToOne(mappedBy="player", cascade=CascadeType.ALL, optional=true)
+    @OneToOne(mappedBy="player", cascade=CascadeType.ALL, optional=true, orphanRemoval=true)
     private Center center;
 
-    @OneToOne(mappedBy="player", cascade=CascadeType.ALL, optional=true)
+    @OneToOne(mappedBy="player", cascade=CascadeType.ALL, optional=true, orphanRemoval=true)
     private PointGuard point_guard;
 
     @Column(name="name")

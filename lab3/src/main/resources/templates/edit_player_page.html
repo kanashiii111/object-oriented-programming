@@ -46,7 +46,55 @@
                 </select>
                 <span class="field-error" id="teamIdError"></span>
             </div>
-            
+
+            <div class="form-group">
+                <label>Амплуа:</label>
+                <select id="type" name="type" required>
+                    <option value="">Выберите...</option>
+                    <option value="center" th:selected="${player.type == 'center'}">Центровой</option>
+                    <option value="point_guard" th:selected="${player.type == 'point_guard'}">Разыгрывающий</option>
+                </select>
+                <span class="field-error" id="typeError"></span>
+            </div>
+
+            <div class="form-group-center" style="display: none;">
+                <label>Блоки:</label>
+                <input type="number" name="blocks" id="blocks" 
+                    th:value="${player.center != null ? player.center.blocks : 0}"/>
+                <span class="field-error" id="blocksError"></span>
+            </div>
+
+            <div class="form-group-center" style="display: none;">
+                <label>Подборы:</label>
+                <input type="number" name="rebounds" id="rebounds"
+                    th:value="${player.center != null ? player.center.rebounds : 0}"/>
+                <span class="field-error" id="reboundsError"></span>
+            </div>
+
+            <div class="form-group-center" style="display: none;">
+                <label>Блоки за игру:</label>
+                <input type="number" step="0.1" name="blocksPerGame" id="blocksPerGame"
+                    th:value="${player.center != null ? player.center.blocksPerGame : 0}"/>
+            </div>
+
+            <div class="form-group-center" style="display: none;">
+                <label>Подборы за игру:</label>
+                <input type="number" step="0.1" name="reboundsPerGame" id="reboundsPerGame"
+                    th:value="${player.center != null ? player.center.reboundsPerGame : 0}"/>
+            </div>
+
+            <div class="form-group-pg" style="display: none;">
+                <label>Ассисты за игру:</label>
+                <input type="number" step="0.1" name="assistsPerGame" id="assistsPerGame"
+                    th:value="${player.pointGuard != null ? player.pointGuard.assistsPerGame : 0}"/>
+            </div>
+
+            <div class="form-group-pg" style="display: none;">
+                <label>Процент трехочковых:</label>
+                <input type="number" step="0.1" name="threePointPercentage" id="threePointPercentage"
+                    th:value="${player.pointGuard != null ? player.pointGuard.threePointPercentage : 0}"/>
+            </div>
+    
             <div class="form-group">
                 <button type="submit">Сохранить игрока</button>
                 <a th:href="@{/home}">Отмена</a>

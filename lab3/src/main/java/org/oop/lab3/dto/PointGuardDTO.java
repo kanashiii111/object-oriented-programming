@@ -13,9 +13,9 @@ import lombok.Data;
 })
 public class PointGuardDTO {
     private Long id;
-    @Positive(message="assists per game must atleast be 0")
+    @Positive(message="Ассисты за игру должны быть хотя 0")
     private Float assistsPerGame;
-    @Positive(message="three point percentage must atleast be 0")
+    @Positive(message="Процент трехочковых должен быть хотя 0")
     private Float threePointPercentage;
 
     public Long getId() {

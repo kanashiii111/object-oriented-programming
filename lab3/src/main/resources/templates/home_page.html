@@ -7,14 +7,14 @@
         <script th:src="@{/js/home_page_scripts.js}" defer></script>
     </head>
     <body>
-        <h1>Teams List</h1>
+        <h1>Список Команды</h1>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>Actions</th>
+                    <th>Название</th>
+                    <th>Город</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,8 +24,8 @@
                     <td th:text="${team.city}"></td>
                     <td>
                         <div class="team-action-btns">
-                            <button th:onclick="'redirectToUpdateTeamForm(' + ${team.id} + ')'">Edit</button>
-                            <button th:onclick="'deleteSelectedTeam(' + ${team.id} + ')'">Delete</button>
+                            <button th:onclick="'redirectToUpdateTeamForm(' + ${team.id} + ')'">Редактировать</button>
+                            <button th:onclick="'deleteSelectedTeam(' + ${team.id} + ')'">Удалить</button>
                         </div>
                     </td>
                 </tr>
@@ -36,18 +36,18 @@
 
         <!-- Players -->
 
-        <h1>Players List</h1>
+        <h1>Список игроков</h1>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Height (cm)</th>
-                    <th>Jersey number #</th>
-                    <th>Type</th>
-                    <th>Team ID</th>
-                    <th>Position Specific Stats</th>
-                    <th>Actions</th>
+                    <th>Имя</th>
+                    <th>Рост (cm)</th>
+                    <th>Номер #</th>
+                    <th>Тип</th>
+                    <th>ID Команды</th>
+                    <th>Статистика</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,24 +60,24 @@
                     <td th:text="${player.teamId}"></td>
                     <td>
                         <div th:if="${player.center != null}">
-                            <strong>Center Stats:</strong><br/>
-                            Blocks: <span th:text="${player.center.blocks}"></span><br/>
-                            Rebounds: <span th:text="${player.center.rebounds}"></span><br/>
-                            Blocks/Game: <span th:text="${player.center.blocksPerGame}"></span><br/>
-                            Rebounds/Game: <span th:text="${player.center.reboundsPerGame}"></span>
+                            <strong>Статистика центрового:</strong><br/>
+                            Блоки: <span th:text="${player.center.blocks}"></span><br/>
+                            Подборы: <span th:text="${player.center.rebounds}"></span><br/>
+                            Блоки за игру: <span th:text="${player.center.blocksPerGame}"></span><br/>
+                            Подборы за игру: <span th:text="${player.center.reboundsPerGame}"></span>
                         </div>
                         
                         <div th:if="${player.pointGuard != null}">
-                            <strong>Point Guard Stats:</strong><br/>
-                            Assists/Game: <span th:text="${player.pointGuard.assistsPerGame}"></span><br/>
-                            3PT %: <span th:text="${player.pointGuard.threePointPercentage}"></span>
+                            <strong>Статистика разыгрывающего:</strong><br/>
+                            Ассисты за игру: <span th:text="${player.pointGuard.assistsPerGame}"></span><br/>
+                            Процент трехочковых: <span th:text="${player.pointGuard.threePointPercentage}"></span>
                         </div>
                     </td>
                     <td>
                         <div class="player-action-btns">
-                            <button th:onclick="'redirectToPlayerMethods(' + ${player.id} + ')'">Methods</button>
-                            <button th:onclick="'redirectToUpdatePlayerForm(' + ${player.id} + ')'">Edit</button>
-                            <button th:onclick="'deleteSelectedPlayer(' + ${player.id} + ')'">Delete</button>
+                            <button th:onclick="'redirectToPlayerMethods(' + ${player.id} + ')'">Методы</button>
+                            <button th:onclick="'redirectToUpdatePlayerForm(' + ${player.id} + ')'">Редактировать</button>
+                            <button th:onclick="'deleteSelectedPlayer(' + ${player.id} + ')'">Удалить</button>
                         </div>
                     </td>
                 </tr>
