@@ -1,4 +1,10 @@
-SHELL := bash.exe
+ifeq ($(OS),Windows_NT)
+    # Настройки для Windows
+    SHELL := bash.exe
+else
+    # Настройки для Linux / macOS
+    SHELL := /bin/bash
+endif
 
 ## --- DOCKER ---
 
