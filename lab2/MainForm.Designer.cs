@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             dataGridView1 = new DataGridView();
+            AddPlayerButton = new Button();
+            DeleteButton = new Button();
+            PlayerEditButton = new Button();
+            PlayerMethodsButton = new Button();
+            button1 = new Button();
             PlayerID = new DataGridViewTextBoxColumn();
             PlayerName = new DataGridViewTextBoxColumn();
             PlayerHeight = new DataGridViewTextBoxColumn();
             PlayerJerseyNumber = new DataGridViewTextBoxColumn();
             PlayerType = new DataGridViewTextBoxColumn();
             PlayerInfo = new DataGridViewTextBoxColumn();
-            AddPlayerButton = new Button();
-            DeleteButton = new Button();
-            PlayerEditButton = new Button();
-            PlayerMethodsButton = new Button();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -50,47 +50,8 @@
             dataGridView1.Location = new Point(12, 12);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(853, 255);
+            dataGridView1.Size = new Size(953, 255);
             dataGridView1.TabIndex = 0;
-            // 
-            // PlayerID
-            // 
-            PlayerID.HeaderText = "ID";
-            PlayerID.MinimumWidth = 6;
-            PlayerID.Name = "PlayerID";
-            PlayerID.Width = 125;
-            // 
-            // PlayerName
-            // 
-            PlayerName.HeaderText = "Name";
-            PlayerName.MinimumWidth = 6;
-            PlayerName.Name = "PlayerName";
-            PlayerName.Width = 125;
-            // 
-            // PlayerHeight
-            // 
-            PlayerHeight.HeaderText = "Height";
-            PlayerHeight.MinimumWidth = 6;
-            PlayerHeight.Name = "PlayerHeight";
-            PlayerHeight.Width = 125;
-            // 
-            // PlayerJerseyNumber
-            // 
-            PlayerJerseyNumber.HeaderText = "Jersey Number";
-            PlayerJerseyNumber.MinimumWidth = 6;
-            PlayerJerseyNumber.Name = "PlayerJerseyNumber";
-            PlayerJerseyNumber.Width = 125;
-            // 
-            // PlayerType
-            // 
-            PlayerType.HeaderText = "Type";
-            PlayerType.Name = "PlayerType";
-            // 
-            // PlayerInfo
-            // 
-            PlayerInfo.HeaderText = "Info";
-            PlayerInfo.Name = "PlayerInfo";
-            PlayerInfo.Width = 200;
             // 
             // AddPlayerButton
             // 
@@ -142,6 +103,45 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // PlayerID
+            // 
+            PlayerID.HeaderText = "ID";
+            PlayerID.MinimumWidth = 6;
+            PlayerID.Name = "PlayerID";
+            PlayerID.Width = 125;
+            // 
+            // PlayerName
+            // 
+            PlayerName.HeaderText = "Name";
+            PlayerName.MinimumWidth = 6;
+            PlayerName.Name = "PlayerName";
+            PlayerName.Width = 125;
+            // 
+            // PlayerHeight
+            // 
+            PlayerHeight.HeaderText = "Height";
+            PlayerHeight.MinimumWidth = 6;
+            PlayerHeight.Name = "PlayerHeight";
+            PlayerHeight.Width = 125;
+            // 
+            // PlayerJerseyNumber
+            // 
+            PlayerJerseyNumber.HeaderText = "Jersey Number";
+            PlayerJerseyNumber.MinimumWidth = 6;
+            PlayerJerseyNumber.Name = "PlayerJerseyNumber";
+            PlayerJerseyNumber.Width = 125;
+            // 
+            // PlayerType
+            // 
+            PlayerType.HeaderText = "Type";
+            PlayerType.Name = "PlayerType";
+            // 
+            // PlayerInfo
+            // 
+            PlayerInfo.HeaderText = "Info";
+            PlayerInfo.Name = "PlayerInfo";
+            PlayerInfo.Width = 300;
+            // 
             // MainForm
             // 
             ClientSize = new Size(1655, 776);
@@ -163,14 +163,14 @@
         private DataGridView dataGridView1;
         private Button AddPlayerButton;
         private Button DeleteButton;
+        private Button PlayerEditButton;
+        private Button PlayerMethodsButton;
+        private Button button1;
         private DataGridViewTextBoxColumn PlayerID;
         private DataGridViewTextBoxColumn PlayerName;
         private DataGridViewTextBoxColumn PlayerHeight;
         private DataGridViewTextBoxColumn PlayerJerseyNumber;
         private DataGridViewTextBoxColumn PlayerType;
         private DataGridViewTextBoxColumn PlayerInfo;
-        private Button PlayerEditButton;
-        private Button PlayerMethodsButton;
-        private Button button1;
     }
 }

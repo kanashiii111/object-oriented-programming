@@ -245,11 +245,12 @@ namespace lab2.Classes
                 connection.Open();
                 SqliteCommand command = new SqliteCommand();
                 command.Connection = connection;
-                command.CommandText = "UPDATE Players SET Name = @Name, Height = @Height, JerseyNumber = @JerseyNumber WHERE ID = @ID";
+                command.CommandText = "UPDATE Players SET Name = @Name, Height = @Height, JerseyNumber = @JerseyNumber, Type = @Type WHERE ID = @ID";
                 command.Parameters.AddWithValue("@ID", player.getID());
                 command.Parameters.AddWithValue("@Name", player.getName());
                 command.Parameters.AddWithValue("@Height", player.getHeight());
                 command.Parameters.AddWithValue("@JerseyNumber", player.getJerseyNumber());
+                command.Parameters.AddWithValue("@Type", player.getType());
                 command.ExecuteNonQuery();
 
                 if (player.getType() == Type.Center)
@@ -257,18 +258,42 @@ namespace lab2.Classes
                     command.Parameters.Clear();
                     command.CommandText = "UPDATE Centers SET Blocks = @Blocks, Rebounds = @Rebounds, BlocksPerGame = @BlocksPerGame, ReboundsPerGame = @ReboundsPerGame WHERE ID = @ID";
                     command.Parameters.AddWithValue("@ID", player.getID());
-                    command.Parameters.AddWithValue("@Blocks", player.getCenter()?.getBlocks());
-                    command.Parameters.AddWithValue("@Rebounds", player.getCenter()?.getRebounds());
-                    command.Parameters.AddWithValue("@BlocksPerGame", player.getCenter()?.getBlocksPerGame());
-                    command.Parameters.AddWithValue("@ReboundsPerGame", player.getCenter()?.getReboundsPerGame());
+                    command.Parameters.AddWithValue("@Blocks", player.getCenter()?.getBlocks() ?? 0);
+                    command.Parameters.AddWithValue("@Rebounds", player.getCenter()?.getRebounds() ?? 0);
+                    command.Parameters.AddWithValue("@BlocksPerGame", player.getCenter()?.getBlocksPerGame() ?? 0.0);
+                    command.Parameters.AddWithValue("@ReboundsPerGame", player.getCenter()?.getReboundsPerGame() ?? 0.0);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        command.CommandText = "INSERT INTO Centers (ID, Blocks, Rebounds, BlocksPerGame, ReboundsPerGame) VALUES (@ID, @Blocks, @Rebounds, @BlocksPerGame, @ReboundsPerGame)";
+                        command.ExecuteNonQuery();
+                    }
+
+                    command.Parameters.Clear();
+                    command.CommandText = "DELETE FROM PointGuards WHERE ID = @ID";
+                    command.Parameters.AddWithValue("@ID", player.getID());
                     command.ExecuteNonQuery();
                 } else if (player.getType() == Type.PointGuard)
                 {
                     command.Parameters.Clear();
                     command.CommandText = "UPDATE PointGuards SET AssistsPerGame = @AssistsPerGame, ThreePointPercentage = @ThreePointPercentage WHERE ID = @ID";
                     command.Parameters.AddWithValue("@ID", player.getID());
-                    command.Parameters.AddWithValue("@AssistsPerGame", player.getPointGuard()?.getAssistsPerGame());
-                    command.Parameters.AddWithValue("@ThreePointPercentage", player.getPointGuard()?.getThreePointPercentage());
+                    command.Parameters.AddWithValue("@AssistsPerGame", player.getPointGuard()?.getAssistsPerGame() ?? 0);
+                    command.Parameters.AddWithValue("@ThreePointPercentage", player.getPointGuard()?.getThreePointPercentage() ?? 0);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                    {
+                        command.CommandText = "INSERT INTO PointGuards (ID, AssistsPerGame, ThreePointPercentage) VALUES (@ID, @AssistsPerGame, @ThreePointPercentage)";
+                        command.ExecuteNonQuery();
+                    }
+
+                    command.Parameters.Clear();
+                    command.CommandText = "DELETE FROM Centers WHERE ID = @ID";
+                    command.Parameters.AddWithValue("@ID", player.getID());
                     command.ExecuteNonQuery();
                 }
 
