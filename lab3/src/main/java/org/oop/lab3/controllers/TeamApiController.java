@@ -2,7 +2,9 @@ package org.oop.lab3.controllers;
 
 import java.util.List;
 
+import org.oop.lab3.dto.PlayerDTO;
 import org.oop.lab3.dto.TeamDTO;
+import org.oop.lab3.services.PlayerService;
 import org.oop.lab3.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,16 @@ import jakarta.validation.Valid;
 public class TeamApiController {
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private PlayerService playerService;
 
     @GetMapping
     public List<TeamDTO> getTeams() {
         return teamService.getTeams();
+    }
+    @GetMapping("/{id}/players")
+    public List<PlayerDTO> getTeamPlayers(@PathVariable Long id) {
+        return playerService.getPlayersByTeamId(id);
     }
     @Transactional
     @PostMapping

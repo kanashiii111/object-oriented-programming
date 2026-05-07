@@ -24,6 +24,7 @@
                     <td th:text="${team.city}"></td>
                     <td>
                         <div class="team-action-btns">
+                            <button class="show-players-btn" th:data-id="${team.id}" th:data-name="${team.name}">Показать игроков</button>
                             <button th:onclick="'redirectToUpdateTeamForm(' + ${team.id} + ')'">Редактировать</button>
                             <button th:onclick="'deleteSelectedTeam(' + ${team.id} + ')'">Удалить</button>
                         </div>
@@ -85,5 +86,19 @@
         </table>
 
         <button onclick="redirectToCreatePlayerForm()">Создать нового игрока</button>
+
+        <div id="teamPlayersModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Игроки команды: <span id="teamName"></span></h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="teamPlayersList">
+                        <p>Загрузка...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

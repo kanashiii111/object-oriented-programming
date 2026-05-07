@@ -2,6 +2,7 @@ package org.oop.lab3.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.oop.lab3.dto.PlayerDTO;
 import org.oop.lab3.dto.PlayerMapper;
@@ -36,6 +37,13 @@ public class PlayerService {
         Player player = playerRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
         return playerMapper.toDTO(player);
+    }
+
+    public List<PlayerDTO> getPlayersByTeamId(long teamId) {
+        return playerRepository.findByTeamId(teamId)
+            .stream()
+            .map(playerMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
     public PlayerDTO savePlayer(PlayerDTO dto) {
