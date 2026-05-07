@@ -20,6 +20,22 @@ class Center(Base):
 
     player: Mapped["Player"] = relationship(back_populates="center")
     
+    def __init__(self, id, blocks_per_game, rebounds_per_game, blocks = None, rebounds = None):
+        self.id = id
+
+        if blocks == None and rebounds == None:
+            self.blocks = 888
+            self.rebounds = 888
+        elif blocks == None and not (rebounds == None):
+            self.blocks = 999
+            self.rebounds = rebounds
+        elif not (blocks == None) and rebounds == None:
+            self.blocks = blocks
+            self.rebounds = 1000
+            
+        self.blocks_per_game = blocks_per_game
+        self.rebounds_per_game = rebounds_per_game
+    
     def play(self):
         return str.format("{name} dominates the post, blocks and dunks the ball.", name=self.getPlayer().getName())
     

@@ -21,6 +21,22 @@ class PointGuard(Base):
     three_points_per_game: Mapped[float] = mapped_column(nullable=True)
 
     player: Mapped["Player"] = relationship(back_populates="point_guard")
+
+    def __init__(self, id, assists_per_game, three_points_per_game, assists= None, three_point_makes = None):
+        self.id = id
+
+        if assists == None and three_point_makes == None:
+            self.assists = 111
+            self.three_point_makes = 111
+        elif assists == None and not (three_point_makes == None):
+            self.assists = 222
+            self.three_point_makes = three_point_makes 
+        elif not (assists == None) and three_point_makes == None:
+            self.assists = assists
+            self.three_point_makes = 333
+            
+        self.assists_per_game = assists_per_game
+        self.three_points_per_game = three_points_per_game
     
     def play(self):
         return str.format("{name} is orchestrating the offense, making plays and hitting three-pointers.", name=self.getPlayer().getName())

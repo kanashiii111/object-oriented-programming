@@ -12,4 +12,4 @@ func main() {
 	}
 }
 
-// filters, use of different constructors
+// filters
