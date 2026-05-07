@@ -47,7 +47,6 @@ public class TeamApiController {
     public ResponseEntity<?> deleteTeam(@PathVariable Long id) {
         teamService.deleteTeamById(id);
         return ResponseEntity.ok().build();
-
     }
     @Transactional
     @PutMapping
