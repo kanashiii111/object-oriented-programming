@@ -41,7 +41,7 @@ func ValidateCenter(center *models.Center) map[string]any {
 }
 
 func CalculateCenterStats(center *models.Center, gamesPlayed int) {
-	if gamesPlayed > 0 {
+	if gamesPlayed > 0 && center.Blocks != nil && center.Rebounds != nil {
 		center.BlocksPerGame = float64(*center.Blocks) / float64(gamesPlayed)
 		center.ReboundsPerGame = float64(*center.Rebounds) / float64(gamesPlayed)
 	} else {

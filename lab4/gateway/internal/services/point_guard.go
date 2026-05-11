@@ -34,7 +34,7 @@ func ValidatePointGuard(pointGuard *models.PointGuard) map[string]any {
 }
 
 func CalculatePointGuardStats(pointGuard *models.PointGuard, gamesPlayed int) {
-	if gamesPlayed > 0 {
+	if gamesPlayed > 0 && pointGuard.Assists != nil && pointGuard.ThreePointMakes != nil {
 		pointGuard.AssistsPerGame = float64(*pointGuard.Assists) / float64(gamesPlayed)
 		pointGuard.ThreePointsPerGame = (float64(*pointGuard.ThreePointMakes) / float64(gamesPlayed))
 	} else {
