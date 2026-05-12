@@ -10,24 +10,24 @@
         <h1>Редактирование игрока</h1>
 
         <div id="errorContainer" class="error-message" style="display: none;"></div><br>
-        
+
         <form id="playerForm">
 
             <input type="hidden" id="playerId" th:value="${player.id}">
             <input type="hidden" id="playerType" th:value="${player.type}">
-            
+
             <div class="form-group">
                 <label>Имя:</label>
                 <input type="text" name="name" id="name" th:value="${player.name}" required/>
                 <span class="field-error" id="nameError"></span>
             </div>
-            
+
             <div class="form-group">
                 <label>Рост (см):</label>
                 <input type="number" name="height" id="height" th:value="${player.height}" required/>
                 <span class="field-error" id="heightError"></span>
             </div>
-            
+
             <div class="form-group">
                 <label>Игровой номер:</label>
                 <input type="number" name="jerseyNumber" id="jerseyNumber" th:value="${player.jerseyNumber}" required/>
@@ -36,11 +36,11 @@
 
             <div class="form-group">
                 <label>Команда:</label>
-                <select id="teamId" name="teamId" th:value="${player.teamId}" required>
+                <select id="teamId" name="teamId" th:value="${player.team.id}" required>
                     <option value="">Выберите...</option>
-                    <option th:each="team : ${teams}" 
+                    <option th:each="team : ${teams}"
                             th:value="${team.id}"
-                            th:selected="${team.id == player.teamId}" 
+                            th:selected="${team.id == player.team.id}"
                             th:text="${team.name} + ' (' + ${team.city} + ')'">
                     </option>
                 </select>
@@ -51,15 +51,15 @@
                 <label>Амплуа:</label>
                 <select id="type" name="type" required>
                     <option value="">Выберите...</option>
-                    <option value="center" th:selected="${player.type == 'center'}">Центровой</option>
-                    <option value="point_guard" th:selected="${player.type == 'point_guard'}">Разыгрывающий</option>
+                    <option value="center" th:selected="${player.center != null}">Центровой</option>
+                    <option value="pointGuard" th:selected="${player.pointGuard != null}">Разыгрывающий</option>
                 </select>
                 <span class="field-error" id="typeError"></span>
             </div>
 
             <div class="form-group-center" style="display: none;">
                 <label>Блоки:</label>
-                <input type="number" name="blocks" id="blocks" 
+                <input type="number" name="blocks" id="blocks"
                     th:value="${player.center != null ? player.center.blocks : 0}"/>
                 <span class="field-error" id="center.blocksError"></span>
             </div>
@@ -98,7 +98,7 @@
                     th:value="${player.pointGuard != null ? player.pointGuard.threePointPercentage : 0}"/>
                 <span class="field-error" id="pointGuard.threePointPercentageError"></span>
             </div>
-    
+
             <div class="form-group">
                 <button type="submit">Сохранить игрока</button>
                 <a th:href="@{/home}">Отмена</a>

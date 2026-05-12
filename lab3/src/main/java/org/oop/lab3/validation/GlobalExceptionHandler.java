@@ -15,32 +15,23 @@ import org.springframework.web.context.request.WebRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, WebRequest request) {
         Map<String, Object> response = new HashMap<>();
         Map<String, String> errors = new HashMap<>();
-        
+
         e.getBindingResult().getAllErrors().forEach(error -> {
             String field = ((FieldError) error).getField();
             String message = ((FieldError) error).getDefaultMessage();
             errors.put(field, message);
         });
-        
+
         response.put("status", HttpStatus.BAD_REQUEST.value());
         response.put("errors", errors);
         response.put("message", "Validation failed");
-        
-        return response;
-    }
-    
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleGeneralException(Exception e) {
-        Map<String, String> response = new HashMap<>();
-        response.put("error", "Internal server error");
-        response.put("message", e.getMessage());
+
         return response;
     }
 
@@ -49,17 +40,26 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         Map<String, String> errors = new HashMap<>();
         errors.put("name", "Entry with this name already exists");
-        
+
         String message = "Data integrity failure";
-        
+
         if (e.getMessage() != null && e.getMessage().contains("name")) {
             message = "Entry with this name already exists";
         }
 
         response.put("status", HttpStatus.CONFLICT.value());
         response.put("message", message);
-        response.put("errors", errors); 
-        
+        response.put("errors", errors);
+
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> handleGeneralException(Exception e) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Internal server error");
+        response.put("message", e.getMessage());
+        return response;
     }
 }

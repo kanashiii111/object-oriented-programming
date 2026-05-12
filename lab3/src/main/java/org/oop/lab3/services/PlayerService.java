@@ -2,10 +2,7 @@ package org.oop.lab3.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.oop.lab3.dto.PlayerDTO;
-import org.oop.lab3.dto.PlayerMapper;
 import org.oop.lab3.entities.Center;
 import org.oop.lab3.entities.Player;
 import org.oop.lab3.entities.PointGuard;
@@ -21,44 +18,37 @@ public class PlayerService {
     private PlayerRepository playerRepository;
     @Autowired
     private TeamRepository teamRepository;
-    @Autowired
-    private PlayerMapper playerMapper;
 
-    public List<PlayerDTO> getPlayers() {
+    public List<Player> getPlayers() {
         Iterable<Player> players = playerRepository.findAll();
         List<Player> playersList= new ArrayList<>();
         players.forEach(playersList::add);
         return playersList.stream()
-            .map(playerMapper::toDTO)
             .toList();
     }
 
-    public PlayerDTO getPlayerByID(Long id) {
+    public Player getPlayerByID(Long id) {
         Player player = playerRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Player not found with id: " + id));
-        return playerMapper.toDTO(player);
+        return player;
     }
 
-    public List<PlayerDTO> getPlayersByTeamId(long teamId) {
-        return playerRepository.findByTeamId(teamId)
-            .stream()
-            .map(playerMapper::toDTO)
-            .collect(Collectors.toList());
+    public List<Player> getPlayersByTeamId(long teamId) {
+        Team team = teamRepository.findById(teamId).
+            orElseThrow(() -> new RuntimeException("Team not found with id: " + teamId));
+
+        return team.getPlayers();
     }
 
-    public PlayerDTO savePlayer(PlayerDTO dto) {
-        Player player = playerMapper.toEntity(dto);
-    
-        if (dto.getTeamId() != null) {
-            Team team = teamRepository.findById(dto.getTeamId()).orElseThrow(() -> new RuntimeException("Team not found"));
-            player.setTeam(team);
-        }
-        
-        if (player.getType() == Player.Type.point_guard) {
+    public Player savePlayer(Player new_player) {
+        Team team = teamRepository.findById(new_player.getTeam().getId()).orElseThrow(() -> new RuntimeException("Team not found"));
+        new_player.setTeam(team);
+
+        if (new_player.getType() == Player.Type.pointGuard) {
 
             // КОНСТРУКТОРЫ СЮДА РАЗНЫЕ ДОБАВИТЬ НАДО И ЕЩЕ ЧТОБЫ РАБОТАЛО НЕ ТОЛЬКО ДЛЯ АПИ
-            Float apg = dto.getPointGuard().getAssistsPerGame();
-            Float tpp = dto.getPointGuard().getThreePointPercentage();
+            Float apg = new_player.getPointGuard().getAssistsPerGame();
+            Float tpp = new_player.getPointGuard().getThreePointPercentage();
 
             if (apg == null || tpp == null) {
                 throw new RuntimeException("PointGuard needs both apg and tpp");
@@ -66,15 +56,15 @@ public class PlayerService {
 
             PointGuard pg = new PointGuard(apg, tpp);
 
-            player.setPointGuard( pg );
-            player.getPointGuard().setPlayer(player);
+            new_player.setPointGuard(pg);
+            new_player.getPointGuard().setPlayer(new_player);
 
         } else {
 
-            Integer blocks = dto.getCenter().getBlocks();
-            Integer rebounds = dto.getCenter().getRebounds();
-            Float bpg = dto.getCenter().getBlocksPerGame();
-            Float rpg = dto.getCenter().getReboundsPerGame();
+            Integer blocks = new_player.getCenter().getBlocks();
+            Integer rebounds = new_player.getCenter().getRebounds();
+            Float bpg = new_player.getCenter().getBlocksPerGame();
+            Float rpg = new_player.getCenter().getReboundsPerGame();
             Center center = null;
 
             if (blocks != null && rebounds != null && bpg != null && rpg != null) {
@@ -86,65 +76,72 @@ public class PlayerService {
             } else {
                 throw new RuntimeException("Center needs atleast bpg and rpg");
             }
-            
-            player.setCenter( center );
-            player.getCenter().setPlayer(player);
-            
-        }
-        return playerMapper.toDTO(playerRepository.save(player));
-    }
 
-    public void deletePlayer(PlayerDTO dto) {
-        Player player = playerMapper.toEntity(dto);
-        playerRepository.deleteById(player.getId());
+            new_player.setCenter(center);
+            new_player.getCenter().setPlayer(new_player);
+
+        }
+        return playerRepository.save(new_player);
     }
 
     public void deletePlayerByID(Long id) {
         playerRepository.deleteById(id);
     }
 
-    public PlayerDTO editPlayer(PlayerDTO dto) {
-        Player player = playerRepository.findById(dto.getId())
+    public Player editPlayer(Player newPlayerData) {
+        Player player = playerRepository.findById(newPlayerData.getId())
             .orElseThrow(() -> new RuntimeException("Player not found"));
-        
-        player.setName(dto.getName());
-        player.setHeight(dto.getHeight());
-        player.setJerseyNumber(dto.getJerseyNumber());
-        
-        String type = dto.getType();
-        Player.Type trueType = (type.equals("center")) ? Player.Type.center : Player.Type.point_guard;
 
-        if (trueType == Player.Type.center) {
-            Center center = player.getCenter();
-            if (center == null) center = new Center();
-            
-            center.setBlocks(dto.getCenter().getBlocks());
-            center.setRebounds(dto.getCenter().getRebounds());
-            center.setBlocksPerGame(dto.getCenter().getBlocksPerGame());
-            center.setReboundsPerGame(dto.getCenter().getReboundsPerGame());
+        player.setName(newPlayerData.getName());
+        player.setHeight(newPlayerData.getHeight());
+        player.setJerseyNumber(newPlayerData.getJerseyNumber());
+
+        Player.Type type = newPlayerData.getType();
+
+        if (type == Player.Type.center) {
+            // Center center = player.getCenter();
+            // if (center == null) center = new Center();
+
+            // center.setBlocks(newPlayerData.getCenter().getBlocks());
+            // center.setRebounds(newPlayerData.getCenter().getRebounds());
+            // center.setBlocksPerGame(newPlayerData.getCenter().getBlocksPerGame());
+            // center.setReboundsPerGame(newPlayerData.getCenter().getReboundsPerGame());
+
+            Integer blocks = newPlayerData.getCenter().getBlocks();
+            Integer rebounds = newPlayerData.getCenter().getRebounds();
+            Float bpg = newPlayerData.getCenter().getBlocksPerGame();
+            Float rpg = newPlayerData.getCenter().getReboundsPerGame();
+            Center center = null;
+
+            if (blocks != null && rebounds != null && bpg != null && rpg != null) {
+                center = new Center(blocks, rebounds, bpg, rpg);
+            } else if (blocks != null && bpg != null && rpg != null) {
+                center = new Center(blocks, bpg, rpg);
+            } else if (bpg != null && rpg != null) {
+                center = new Center(bpg, rpg);
+            } else {
+                throw new RuntimeException("Center needs atleast bpg and rpg");
+            }
+
             center.setPlayer(player);
             player.setCenter(center);
             player.setPointGuard(null);
-        } else if (trueType == Player.Type.point_guard) {
+        } else if (type == Player.Type.pointGuard) {
             PointGuard pg = player.getPointGuard();
             if (pg == null) pg = new PointGuard();
-            
-            pg.setAssistsPerGame(dto.getPointGuard().getAssistsPerGame());
-            pg.setThreePointPercentage(dto.getPointGuard().getThreePointPercentage());
+
+            pg.setAssistsPerGame(newPlayerData.getPointGuard().getAssistsPerGame());
+            pg.setThreePointPercentage(newPlayerData.getPointGuard().getThreePointPercentage());
             pg.setPlayer(player);
             player.setPointGuard(pg);
             player.setCenter(null);
         }
 
-        player.setType(trueType);
+        player.setType(type);
 
-        if (dto.getTeamId() != null) {
-            Team team = teamRepository.findById(dto.getTeamId()).orElse(null);
-            player.setTeam(team);
-        } else {
-            player.setTeam(null);
-        }
-        
-        return playerMapper.toDTO(playerRepository.save(player));
+        Team team = teamRepository.findById(newPlayerData.getTeam().getId()).orElse(null);
+        player.setTeam(team);
+
+        return playerRepository.save(player);
     }
 }

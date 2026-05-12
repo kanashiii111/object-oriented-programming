@@ -58,7 +58,7 @@
                     <td th:text="${player.height}"></td>
                     <td th:text="${player.jerseyNumber}"></td>
                     <td th:text="${player.type}"></td>
-                    <td th:text="${player.teamId}"></td>
+                    <td th:text="${player.team.id}"></td>
                     <td>
                         <div th:if="${player.center != null}">
                             <strong>Статистика центрового:</strong><br/>
@@ -67,7 +67,7 @@
                             Блоки за игру: <span th:text="${player.center.blocksPerGame}"></span><br/>
                             Подборы за игру: <span th:text="${player.center.reboundsPerGame}"></span>
                         </div>
-                        
+
                         <div th:if="${player.pointGuard != null}">
                             <strong>Статистика разыгрывающего:</strong><br/>
                             Ассисты за игру: <span th:text="${player.pointGuard.assistsPerGame}"></span><br/>

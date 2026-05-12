@@ -3,6 +3,9 @@ package org.oop.lab3.entities;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,25 +20,43 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+@JsonPropertyOrder({
+    "id",
+    "name",
+    "height",
+    "jersey_number",
+    "team",
+    "type",
+    "point_guard",
+    "center"
+})
+@Data
 @Entity
 @Table(
     name="players",
     uniqueConstraints = @UniqueConstraint(columnNames = {"name"})
 )
-public class Player implements Playable {
+public class Player implements Playable{
 
     public Player() {}
 
     public Player(String name, int height, int jersey_number, Type type) {
         this.name = name;
         this.height = height;
-        this.jersey_number = jersey_number;
+        this.jerseyNumber = jersey_number;
         this.type = type;
     }
 
     public enum Type {
-        point_guard,
+        pointGuard,
         center
     }
 
@@ -45,75 +66,61 @@ public class Player implements Playable {
     private Long id;
 
     @OneToOne(mappedBy="player", cascade=CascadeType.ALL, optional=true, orphanRemoval=true)
+    @JsonManagedReference
+    @Valid
     private Center center;
 
     @OneToOne(mappedBy="player", cascade=CascadeType.ALL, optional=true, orphanRemoval=true)
-    private PointGuard point_guard;
+    @JsonManagedReference
+    @Valid
+    private PointGuard pointGuard;
 
     @Column(name="name")
+    @NotNull(message="Имя не должно быть пустым")
+    @NotBlank(message="Имя не должно быть пустым")
+    @NotEmpty(message="Имя не должно быть пустым")
     private String name;
 
     @Column(name="height")
+    @Min(value = 150, message="Рост должен быть хотя бы 150")
+    @Max(value = 230, message="Рост не должен быть больше 230")
     private Integer height;
 
     @Column(name="jersey_number")
-    private Integer jersey_number;
+    @Min(value = 0, message="Номер должен быть хотя бы 0")
+    @Max(value = 99, message="Номер не должен быть больше 99")
+    private Integer jerseyNumber;
 
     @Column(name="type")
     @Enumerated(EnumType.ORDINAL)
     private Type type;
 
     @OnDelete(action=OnDeleteAction.SET_NULL)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @Override
     public String play() {
-        if (type == Type.center && center != null) {
+        if (center != null) {
             return center.play();
-        } else if (type == Type.point_guard && point_guard != null) {
-            return point_guard.play();
+        } else {
+            return pointGuard.play();
         }
-        return String.format("%s enters the court.", name);
     }
-    @Override
+
     public String train() {
-        if (type == Type.center && center != null) {
+        if (center != null) {
             return center.train();
-        } else if (type == Type.point_guard && point_guard != null) {
-            return point_guard.train();
+        } else {
+            return pointGuard.train();
         }
-        return String.format("%s is training", name);
     }
-    public String getBasicInfo() {
-        return String.format("Name: %s\nHeight: %d\nJersey number: %d\n", name, height, jersey_number);
-    }
-    @Override
+
     public String printInfo() {
-        if (type == Type.center && center != null) {
-            return center.printInfo();
-        } else if (type == Type.point_guard && point_guard != null) {
-            return point_guard.printInfo();
+        if (center != null) {
+            return String.format("Name: %s\nHeight: %d\nJersey number: %d\n", name, height, jerseyNumber) + center.printInfo();
+        } else {
+            return String.format("Name: %s\nHeight: %d\nJersey number: %d\n", name, height, jerseyNumber) + pointGuard.printInfo();
         }
-        return String.format("Name: %s\nHeight: %d\nJersey number: %d", name, height, jersey_number);
     }
-
-    public Long getId() { return id; }
-    public Center getCenter() { return center; }
-    public PointGuard getPointGuard() { return point_guard; }
-    public String getName() { return name; }
-    public Integer getHeight() { return height; }
-    public Integer getJerseyNumber() { return jersey_number; }
-    public Type getType() { return type; }
-    public Team getTeam() { return team; }
-
-    public void setId( Long id ) { this.id = id; }
-    public void setCenter( Center center ) { this.center = center; }
-    public void setPointGuard( PointGuard point_guard ) { this.point_guard = point_guard; }
-    public void setName( String name ) { this.name = name; }
-    public void setHeight( Integer height ) { this.height = height; }
-    public void setJerseyNumber( Integer jersey_number ) { this.jersey_number = jersey_number; }
-    public void setType( Type type ) { this.type = type; }
-    public void setTeam( Team team ) { this.team = team; }
 }

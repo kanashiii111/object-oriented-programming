@@ -7,7 +7,7 @@ function toggleFields(selectedValue) {
 
     if (selectedValue === 'center') {
         centerFields.forEach(el => el.style.display = 'block');
-    } else if (selectedValue === 'point_guard') {
+    } else if (selectedValue === 'pointGuard') {
         pgFields.forEach(el => el.style.display = 'block');
     }
 }
@@ -23,13 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function displayErrors(errors) {
     document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
     document.querySelectorAll('.error-input').forEach(el => el.classList.remove('error-input'));
-    
+
     for (const [field, message] of Object.entries(errors)) {
         const errorSpan = document.getElementById(`${field}Error`);
         if (errorSpan) {
             errorSpan.textContent = message;
         }
-        
+
         const input = document.querySelector(`[name="${field}"]`);
         if (input) {
             input.classList.add('error-input');
@@ -54,7 +54,7 @@ async function submitPlayer(event) {
         name: document.getElementById('name').value,
         height: parseInt(document.getElementById('height').value),
         jersey_number: parseInt(document.getElementById('jerseyNumber').value),
-        team_id: parseInt(document.getElementById('teamId').value),
+        team: { id: parseInt(document.getElementById('teamId').value) },
         type: document.getElementById('type').value
     }
 
@@ -69,7 +69,7 @@ async function submitPlayer(event) {
             }
         };
         formData = { ...formData, ...centerData };
-    } else if (typeSelect.value === 'point_guard') {
+    } else if (typeSelect.value === 'pointGuard') {
         const pointGuardData = {
             point_guard: {
                 id: parseInt(document.getElementById('playerId').value),

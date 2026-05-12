@@ -2,7 +2,6 @@ package org.oop.lab3.controllers;
 
 import java.util.List;
 
-import org.oop.lab3.dto.PlayerDTO;
 import org.oop.lab3.entities.Player;
 import org.oop.lab3.repositories.PlayerRepository;
 import org.oop.lab3.services.PlayerService;
@@ -30,13 +29,13 @@ public class PlayerApiController {
     private PlayerRepository playerRepository;
 
     @GetMapping
-    public List<PlayerDTO> getPlayers() {
+    public List<Player> getPlayers() {
         return playerService.getPlayers();
     }
     @Transactional
     @PostMapping
-    public ResponseEntity<?> savePlayer(@Valid @RequestBody PlayerDTO playerDTO) {
-        PlayerDTO saved = playerService.savePlayer(playerDTO);
+    public ResponseEntity<?> savePlayer(@Valid @RequestBody Player player) {
+        Player saved = playerService.savePlayer(player);
         return ResponseEntity.ok(saved);
     }
     @Transactional
@@ -47,8 +46,8 @@ public class PlayerApiController {
     }
     @Transactional
     @PutMapping
-    public ResponseEntity<?> updatePlayer(@Valid @RequestBody PlayerDTO playerDTO) {
-        PlayerDTO updated = playerService.editPlayer(playerDTO);
+    public ResponseEntity<?> updatePlayer(@Valid @RequestBody Player player) {
+        Player updated = playerService.editPlayer(player);
         return ResponseEntity.ok(updated);
     }
     @Transactional

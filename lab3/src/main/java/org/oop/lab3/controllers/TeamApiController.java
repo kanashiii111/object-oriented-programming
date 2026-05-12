@@ -2,10 +2,8 @@ package org.oop.lab3.controllers;
 
 import java.util.List;
 
-import org.oop.lab3.dto.PlayerDTO;
-import org.oop.lab3.dto.TeamDTO;
-import org.oop.lab3.services.PlayerService;
-import org.oop.lab3.services.TeamService;
+import org.oop.lab3.entities.*;
+import org.oop.lab3.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,17 +27,17 @@ public class TeamApiController {
     private PlayerService playerService;
 
     @GetMapping
-    public List<TeamDTO> getTeams() {
+    public List<Team> getTeams() {
         return teamService.getTeams();
     }
     @GetMapping("/{id}/players")
-    public List<PlayerDTO> getTeamPlayers(@PathVariable Long id) {
+    public List<Player> getTeamPlayers(@PathVariable Long id) {
         return playerService.getPlayersByTeamId(id);
     }
     @Transactional
     @PostMapping
-    public ResponseEntity<?> saveTeam(@Valid @RequestBody TeamDTO dto) {
-        TeamDTO saved = teamService.saveTeam(dto);
+    public ResponseEntity<?> saveTeam(@Valid @RequestBody Team team) {
+        Team saved = teamService.saveTeam(team);
         return ResponseEntity.ok(saved);
     }
     @Transactional
@@ -50,8 +48,8 @@ public class TeamApiController {
     }
     @Transactional
     @PutMapping
-    public ResponseEntity<?> updateTeam(@Valid @RequestBody TeamDTO dto) {
-        TeamDTO updated = teamService.updateTeam(dto);
+    public ResponseEntity<?> updateTeam(@Valid @RequestBody Team team) {
+        Team updated = teamService.updateTeam(team);
         return ResponseEntity.ok(updated);
     }
 }

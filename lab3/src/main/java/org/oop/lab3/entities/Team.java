@@ -14,8 +14,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(
     name="teams",
     uniqueConstraints = @UniqueConstraint(columnNames = {"name"})
@@ -35,6 +40,9 @@ public class Team{
     private Long id;
 
     @Column(name="name")
+    @NotNull(message="Название не должно быть пустым")
+    @NotBlank(message="Название не должно быть пустым")
+    @NotEmpty(message="Название не должно быть пустым")
     private String name;
 
     @Column(name="city")
@@ -43,16 +51,4 @@ public class Team{
     @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Player> players;
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getCity() { return city; }
-    public void setCity(String city) { this.city = city; } 
-
-    public List<Player> getPlayers() { return players; }
-    public void setPlayers(List<Player> players) { this.players = players; }
 }
