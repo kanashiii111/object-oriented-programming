@@ -1,14 +1,14 @@
-from typing import List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
+
 from sqlalchemy import ForeignKey
-from sqlalchemy import String
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column 
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ..base import Base
 
 if TYPE_CHECKING:
     from .player import Player
+
+
 class Center(Base):
     __tablename__ = "centers"
 
@@ -19,32 +19,64 @@ class Center(Base):
     rebounds_per_game: Mapped[float] = mapped_column(nullable=True)
 
     player: Mapped["Player"] = relationship(back_populates="center")
-    
+
+    def __init__(
+        self, id, blocks_per_game, rebounds_per_game, blocks=None, rebounds=None
+    ):
+        self.id = id
+
+        if blocks is None and rebounds is None:
+            self.blocks = 888
+            self.rebounds = 888
+        elif blocks is None and rebounds is not None:
+            self.blocks = 999
+            self.rebounds = rebounds
+        elif blocks is not None and rebounds is None:
+            self.blocks = blocks
+            self.rebounds = 1000
+        else:
+            self.blocks = blocks or 0
+            self.rebounds = rebounds or 0
+
+        self.blocks_per_game = blocks_per_game
+        self.rebounds_per_game = rebounds_per_game
+
     def play(self):
-        return str.format("{name} dominates the post, blocks and dunks the ball.", name=self.getPlayer().getName())
-    
+        return str.format(
+            "{name} dominates the post, blocks and dunks the ball.",
+            name=self.getPlayer().getName(),
+        )
+
     def train(self):
-        return str.format("{name} is training playing close to basket, rebounding and blocking shots.", name=self.getPlayer().getName())
-    
+        return str.format(
+            "{name} is training playing close to basket, rebounding and blocking shots.",
+            name=self.getPlayer().getName(),
+        )
+
     def printInfo(self):
-        return self.getPlayer().getBasicInfo() + f"\nBlocks: {self.blocks}\nRebounds: {self.rebounds}\nBlocks per game: {self.blocks_per_game}\nRebounds per game: {self.rebounds_per_game}"
-        
+        return (
+            self.getPlayer().getBasicInfo()
+            + f"\nBlocks: {self.blocks}\nRebounds: {self.rebounds}\nBlocks per game: {self.blocks_per_game}\nRebounds per game: {self.rebounds_per_game}"
+        )
+
     def block(self):
         self.blocks += 1
         return str.format("blocks: {blocks}", blocks=self.blocks)
-    
+
     def rebound(self):
         self.rebounds += 1
         return str.format("rebounds: {rebounds}", rebounds=self.rebounds)
-    
+
     def setScreen(self):
         return str.format("{name} sets a screen.", name=self.getPlayer().getName())
-    
+
     def post(self):
-        return str.format("{name} is posting up in the paint.", name=self.getPlayer().getName())
+        return str.format(
+            "{name} is posting up in the paint.", name=self.getPlayer().getName()
+        )
 
     def __repr__(self) -> str:
         return f"Center(id={self.id!r}, blocks={self.blocks!r}, rebounds={self.rebounds!r}, blocks_per_game={self.blocks_per_game!r}, rebounds_per_game={self.rebounds_per_game!r})"
-    
+
     def getPlayer(self):
         return self.player
